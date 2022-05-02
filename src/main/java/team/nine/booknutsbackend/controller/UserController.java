@@ -40,7 +40,7 @@ public class UserController {
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build());
 
-        return new ResponseEntity<Object>(newUser, HttpStatus.OK);
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
     //로그인
@@ -54,7 +54,7 @@ public class UserController {
         }
 
         String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles()); //getUsername -> 이메일 반환
-        return new ResponseEntity<String>(token, HttpStatus.OK);
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
     // 현재 유저 정보
@@ -63,6 +63,6 @@ public class UserController {
         String email = jwtTokenProvider.getUserPk(userToken.get("token"));
         UserDetails loginUser = userService.loadUserByUsername(email);
 
-        return new ResponseEntity<Object>(loginUser, HttpStatus.OK);
+        return new ResponseEntity<>(loginUser, HttpStatus.OK);
     }
 }
