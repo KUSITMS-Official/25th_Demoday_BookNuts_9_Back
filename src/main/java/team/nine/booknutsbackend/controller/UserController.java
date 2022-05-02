@@ -15,6 +15,7 @@ import team.nine.booknutsbackend.repository.UserRepository;
 import team.nine.booknutsbackend.service.UserService;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -45,7 +46,7 @@ public class UserController {
 
     //로그인
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> user) {
+    public ResponseEntity<Object> login(@RequestBody Map<String, String> user) {
         User member = userRepository.findByEmail(user.get("email"))
                 .orElseThrow(() -> new IllegalArgumentException("가입되지않은 이메일입니다."));
 
@@ -54,7 +55,10 @@ public class UserController {
         }
 
         String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles()); //getUsername -> 이메일 반환
-        return new ResponseEntity<>(token, HttpStatus.OK);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("token", token);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     // 현재 유저 정보
