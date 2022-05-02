@@ -3,6 +3,7 @@ package team.nine.booknutsbackend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,5 +55,14 @@ public class UserController {
 
         String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles()); //getUsername -> 이메일 반환
         return new ResponseEntity<String>(token, HttpStatus.OK);
+    }
+
+    // 현재 유저 정보
+    @PostMapping("/userinfo")
+    public ResponseEntity<Object> curUser(@RequestBody Map<String, String> userToken) {
+        String email = jwtTokenProvider.getUserPk(userToken.get("token"));
+        UserDetails loginUser = userService.loadUserByUsername(email);
+
+        return new ResponseEntity<Object>(loginUser, HttpStatus.OK);
     }
 }
