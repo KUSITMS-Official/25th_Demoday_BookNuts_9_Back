@@ -24,9 +24,11 @@ public class UserController {
     @PostMapping("/join")
     public Long join(@RequestBody Map<String, String> user) {
         return userRepository.save(User.builder()
-                .email(user.get("email"))
-                .nickname(user.get("nickname"))
+                .userId(user.get("userId"))
                 .password(passwordEncoder.encode(user.get("password")))
+                .username(user.get("username"))
+                .nickname(user.get("nickname"))
+                .email(user.get("email"))
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build()).getId();
     }
