@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.nine.booknutsbackend.config.JwtTokenProvider;
 import team.nine.booknutsbackend.domain.User;
+import team.nine.booknutsbackend.exception.user.NotFoundEmailException;
+import team.nine.booknutsbackend.exception.user.PasswordErrorException;
 import team.nine.booknutsbackend.repository.UserRepository;
 import team.nine.booknutsbackend.service.UserService;
 
@@ -48,10 +50,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody Map<String, String> user) {
         User member = userRepository.findByEmail(user.get("email"))
-                .orElseThrow(() -> new IllegalArgumentException("가입되지않은 이메일입니다."));
+                .orElseThrow(() -> new NotFoundEmailException("가입되지않은 이메일입니다."));
 
         if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+            throw new PasswordErrorException("잘못된 비밀번호입니다.");
         }
 
         String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles()); //getUsername -> 이메일 반환
