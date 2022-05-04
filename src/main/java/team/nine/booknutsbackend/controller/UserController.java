@@ -34,6 +34,11 @@ public class UserController {
     //회원가입
     @PostMapping("/join")
     public ResponseEntity<Object> join(@RequestBody Map<String, String> user) {
+
+        //유저 아이디, 닉네임 중복 체크
+        userService.checkUserIdDuplication(user.get("userId"));
+        userService.checkNicknameDuplication(user.get("nickname"));
+
         User newUser = userRepository.save(User.builder()
                 .userId(user.get("userId"))
                 .password(passwordEncoder.encode(user.get("password")))
