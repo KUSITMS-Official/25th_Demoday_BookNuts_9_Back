@@ -6,8 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.nine.booknutsbackend.exception.user.NicknameDuplicateException;
-import team.nine.booknutsbackend.exception.user.UserIdDuplicateException;
 import team.nine.booknutsbackend.repository.UserRepository;
 
 @RequiredArgsConstructor
@@ -25,20 +23,14 @@ public class UserService implements UserDetailsService {
 
     //유저 닉네임 중복 체크
     @Transactional(readOnly = true)
-    public void checkNicknameDuplication(String nickname) {
-        boolean nicknameDuplicate = userRepository.existsByNickname(nickname);
-        if (nicknameDuplicate) {
-            throw new NicknameDuplicateException("이미 존재하는 닉네임입니다.");
-        }
+    public boolean checkNicknameDuplication(String nickname) {
+        return userRepository.existsByNickname(nickname);
     }
 
     //유저 아이디 중복 체크
     @Transactional(readOnly = true)
-    public void checkUserIdDuplication(String userId) {
-        boolean userIdDuplicate = userRepository.existsByUserId(userId);
-        if (userIdDuplicate) {
-            throw new UserIdDuplicateException("이미 존재하는 아이디입니다.");
-        }
+    public boolean checkUserIdDuplication(String userId) {
+        return userRepository.existsByUserId(userId);
     }
 
 }

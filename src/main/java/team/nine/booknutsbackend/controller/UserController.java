@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.config.JwtTokenProvider;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.exception.user.NotFoundEmailException;
@@ -35,10 +32,6 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<Object> join(@RequestBody Map<String, String> user) {
 
-        //유저 아이디, 닉네임 중복 체크
-        userService.checkUserIdDuplication(user.get("userId"));
-        userService.checkNicknameDuplication(user.get("nickname"));
-
         User newUser = userRepository.save(User.builder()
                 .userId(user.get("userId"))
                 .password(passwordEncoder.encode(user.get("password")))
@@ -49,6 +42,18 @@ public class UserController {
                 .build());
 
         return new ResponseEntity<>(newUser, HttpStatus.OK);
+    }
+
+    //유저 아이디 중복 체크
+    @GetMapping("/checkNickname/{nickname}")
+    public ResponseEntity<Boolean> checkNicknameDuplicate(@PathVariable String nickname){
+        return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
+    }
+
+    //유저 닉네임 중복 체크
+    @GetMapping("/checkUserId/{userid}")
+    public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userid){
+        return ResponseEntity.ok(userService.checkUserIdDuplication(userid));
     }
 
     //로그인
