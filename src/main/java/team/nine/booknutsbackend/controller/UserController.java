@@ -43,13 +43,13 @@ public class UserController {
 
     //유저 아이디 중복 체크
     @GetMapping("/checkNickname/{nickname}")
-    public ResponseEntity<Boolean> checkNicknameDuplicate(@PathVariable String nickname){
+    public ResponseEntity<Boolean> checkNicknameDuplicate(@PathVariable String nickname) {
         return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
     }
 
     //유저 닉네임 중복 체크
     @GetMapping("/checkUserId/{userid}")
-    public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userid){
+    public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userid) {
         return ResponseEntity.ok(userService.checkUserIdDuplication(userid));
     }
 
@@ -57,19 +57,20 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody Map<String, String> user) {
         User loginUser = userService.loadUserByUsername(user.get("email"));
-
         if (!passwordEncoder.matches(user.get("password"), loginUser.getPassword())) {
             throw new PasswordErrorException("잘못된 비밀번호입니다.");
         }
 
+        //토큰 생성 및 저장
         String token = jwtTokenProvider.createToken(loginUser.getUsername(), loginUser.getRoles()); //getUsername -> 이메일 반환
+        userService.updateToken(loginUser.getId(), token);
 
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    // 현재 유저 정보 - 토큰으로 조회
+    //현재 유저 정보 - 토큰으로 조회
     @PostMapping("/userinfo")
     public ResponseEntity<Object> curUser(@RequestBody Map<String, String> userToken) {
         String email = jwtTokenProvider.getUserPk(userToken.get("token"));
@@ -78,7 +79,7 @@ public class UserController {
         return new ResponseEntity<>(curUser, HttpStatus.OK);
     }
 
-    // 현재 유저 정보 - id로 조회
+    //현재 유저 정보 - id로 조회
     @GetMapping("/userinfo/{id}")
     public ResponseEntity<Object> curUserInfo(@PathVariable String id) {
         User curUser = userService.findUserById(Long.parseLong(id));

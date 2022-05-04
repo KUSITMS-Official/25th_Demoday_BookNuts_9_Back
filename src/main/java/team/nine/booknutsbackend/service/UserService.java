@@ -41,10 +41,17 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("가입되지 않은 이메일입니다."));
     }
 
-    // ID로 유저 정보 조회
+    //ID로 유저 정보 조회
     @Transactional(readOnly = true)
-    public User findUserById(Long id){
+    public User findUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저의 아이디입니다."));
+    }
+
+    //토큰 업데이트
+    public void updateToken(Long id, String token) {
+        User user = findUserById(id);
+        user.setAccessToken(token);
+        userRepository.save(user);
     }
 }
