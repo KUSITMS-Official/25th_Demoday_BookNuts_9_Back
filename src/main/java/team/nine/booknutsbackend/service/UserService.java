@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.repository.UserRepository;
 
 @RequiredArgsConstructor
@@ -14,7 +15,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    // 유저 정보 조회
+    //유저 정보 조회
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
@@ -33,4 +34,8 @@ public class UserService implements UserDetailsService {
         return userRepository.existsByUserId(userId);
     }
 
+    //회원가입
+    public User join(User newUser) {
+        return userRepository.save(newUser);
+    }
 }

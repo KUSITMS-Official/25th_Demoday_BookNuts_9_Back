@@ -1,10 +1,9 @@
 package team.nine.booknutsbackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +14,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
+@Getter @Setter
 @JsonIgnoreProperties(value = {"password", "enabled", "authorities", "accountNonLocked", "accountNonExpired", "credentialsNonExpired"})
 public class User implements UserDetails {
 
@@ -41,6 +37,9 @@ public class User implements UserDetails {
 
     @Column(length = 100, nullable = false, unique = true)
     private String email;
+
+    @Column(length = 300)
+    private String accessToken;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

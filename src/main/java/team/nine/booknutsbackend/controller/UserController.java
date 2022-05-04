@@ -33,16 +33,17 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<Object> join(@RequestBody Map<String, String> user) {
 
-        User newUser = userRepository.save(User.builder()
-                .userId(user.get("userId"))
-                .password(passwordEncoder.encode(user.get("password")))
-                .username(user.get("username"))
-                .nickname(user.get("nickname"))
-                .email(user.get("email"))
-                .roles(Collections.singletonList("ROLE_USER"))
-                .build());
+        User newUser = new User();
+        newUser.setUserId(user.get("userId"));
+        newUser.setPassword(passwordEncoder.encode(user.get("password")));
+        newUser.setUsername(user.get("username"));
+        newUser.setNickname(user.get("nickname"));
+        newUser.setEmail(user.get("email"));
+        newUser.setRoles(Collections.singletonList("ROLE_USER"));
+        newUser.setAccessToken("");
 
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        User saveUser = userService.join(newUser);
+        return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
 
     //유저 아이디 중복 체크
