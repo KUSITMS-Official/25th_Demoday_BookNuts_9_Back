@@ -1,5 +1,6 @@
 package team.nine.booknutsbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @Entity
+@JsonIgnoreProperties(value = {"password", "enabled", "authorities", "accountNonLocked", "accountNonExpired", "credentialsNonExpired"})
 public class User implements UserDetails {
 
     @Id
@@ -26,13 +28,19 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(length = 100, nullable = false, unique = true)
+    private String userId;
+
+    @Column(length = 300, nullable = false)
+    private String password;
+
+    @Column(length = 100, nullable = false)
+    private String username;
+
+    @Column(length = 100, nullable = false, unique = true)
     private String nickname;
 
     @Column(length = 100, nullable = false, unique = true)
     private String email;
-
-    @Column(length = 300, nullable = false)
-    private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -47,8 +55,8 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nickname;
-    }
+        return email;
+    } // userPk -> email
 
     @Override
     public boolean isAccountNonExpired() {
