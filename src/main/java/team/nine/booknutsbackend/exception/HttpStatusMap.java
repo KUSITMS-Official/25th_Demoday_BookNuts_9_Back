@@ -21,10 +21,12 @@ public class HttpStatusMap {
 
         if (exception.equals("NoSuchElementException")) {
             code = HttpStatus.NOT_FOUND;
-        } else if (exception.equals("ExpiredJwtException")        //토큰 관련 예외
+        } else if (exception.equals("ExpiredJwtException")        // 토큰 관련 예외
                 || exception.equals("MalformedJwtException")
                 || exception.equals("UnsupportedJwtException")) {
             code = HttpStatus.UNAUTHORIZED;
+        } else if (exception.equals("NotFoundEmailException")) { // user 관련 커스텀 예외
+            code = HttpStatus.NOT_FOUND;
         } else {
             code = HttpStatus.BAD_REQUEST;
         }
