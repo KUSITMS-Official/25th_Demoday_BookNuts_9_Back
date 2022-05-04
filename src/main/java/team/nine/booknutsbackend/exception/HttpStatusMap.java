@@ -19,16 +19,19 @@ public class HttpStatusMap {
         String exception = e.getClass().getSimpleName();
         HttpStatus code;
 
-        if (exception.equals("NoSuchElementException")) {
-            code = HttpStatus.NOT_FOUND;
-        } else if (exception.equals("ExpiredJwtException")        // 토큰 관련 예외
-                || exception.equals("MalformedJwtException")
-                || exception.equals("UnsupportedJwtException")) {
-            code = HttpStatus.UNAUTHORIZED;
-        } else if (exception.equals("NotFoundEmailException")) { // user 관련 커스텀 예외
-            code = HttpStatus.NOT_FOUND;
-        } else {
-            code = HttpStatus.BAD_REQUEST;
+        switch (exception) {
+            case "NoSuchElementException":
+            case "NotFoundEmailException":  // user 관련 커스텀 예외
+                code = HttpStatus.NOT_FOUND;
+                break;
+            case "ExpiredJwtException":     //토큰 관련 예외
+            case "MalformedJwtException":
+            case "UnsupportedJwtException":
+                code = HttpStatus.UNAUTHORIZED;
+                break;
+            default:
+                code = HttpStatus.BAD_REQUEST;
+                break;
         }
         return code;
     }
