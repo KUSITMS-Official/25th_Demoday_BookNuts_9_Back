@@ -33,10 +33,6 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<Object> join(@RequestBody Map<String, String> user) {
 
-        //유저 아이디, 닉네임 중복 체크
-        userService.checkUserIdDuplication(user.get("userId"));
-        userService.checkNicknameDuplication(user.get("nickname"));
-
         User newUser = userRepository.save(User.builder()
                 .userId(user.get("userId"))
                 .password(passwordEncoder.encode(user.get("password")))
@@ -47,6 +43,18 @@ public class UserController {
                 .build());
 
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
+
+    //유저 아이디 중복 체크
+    @GetMapping("/checkNickname/{nickname}")
+    public ResponseEntity<Boolean> checkNicknameDuplicate(@PathVariable String nickname){
+        return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
+    }
+
+    //유저 닉네임 중복 체크
+    @GetMapping("/checkUserId/{userid}")
+    public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userid){
+        return ResponseEntity.ok(userService.checkUserIdDuplication(userid));
     }
 
     //로그인
