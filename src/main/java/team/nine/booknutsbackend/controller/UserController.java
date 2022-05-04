@@ -72,7 +72,7 @@ public class UserController {
 
     //현재 유저 정보 - 토큰으로 조회
     @PostMapping("/userinfo")
-    public ResponseEntity<Object> curUser(@RequestBody Map<String, String> userToken) {
+    public ResponseEntity<Object> userInfoByToken(@RequestBody Map<String, String> userToken) {
         String email = jwtTokenProvider.getUserPk(userToken.get("token"));
         User curUser = userService.loadUserByUsername(email);
 
@@ -81,7 +81,7 @@ public class UserController {
 
     //현재 유저 정보 - id로 조회
     @GetMapping("/userinfo/{id}")
-    public ResponseEntity<Object> curUserInfo(@PathVariable String id) {
+    public ResponseEntity<Object> userInfoById(@PathVariable String id) {
         User curUser = userService.findUserById(Long.parseLong(id));
 
         return new ResponseEntity<>(curUser, HttpStatus.OK);
