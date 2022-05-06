@@ -29,7 +29,7 @@ public class UserController {
     public ResponseEntity<Object> join(@RequestBody Map<String, String> user) {
 
         User newUser = new User();
-        newUser.setUserId(user.get("userId"));
+        newUser.setLoginId(user.get("loginId"));
         newUser.setPassword(passwordEncoder.encode(user.get("password")));
         newUser.setUsername(user.get("username"));
         newUser.setNickname(user.get("nickname"));
@@ -41,16 +41,16 @@ public class UserController {
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
 
-    //유저 아이디 중복 체크
+    //유저 닉네임 중복 체크
     @GetMapping("/checkNickname/{nickname}")
     public ResponseEntity<Boolean> checkNicknameDuplicate(@PathVariable String nickname) {
         return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
     }
 
-    //유저 닉네임 중복 체크
-    @GetMapping("/checkUserId/{userid}")
-    public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userid) {
-        return ResponseEntity.ok(userService.checkUserIdDuplication(userid));
+    //유저 로그인 아이디 중복 체크
+    @GetMapping("/checkUserId/{loginId}")
+    public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String loginId) {
+        return ResponseEntity.ok(userService.checkLoginIdDuplication(loginId));
     }
 
     //로그인
@@ -63,7 +63,7 @@ public class UserController {
 
         //토큰 생성 및 저장
         String token = jwtTokenProvider.createToken(loginUser.getUsername(), loginUser.getRoles()); //getUsername -> 이메일 반환
-        userService.updateToken(loginUser.getId(), token);
+        userService.updateToken(loginUser.getUserId(), token);
 
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
@@ -72,7 +72,7 @@ public class UserController {
 
     //현재 유저 정보 - 토큰으로 조회
     @PostMapping("/userinfo")
-    public ResponseEntity<Object> curUser(@RequestBody Map<String, String> userToken) {
+    public ResponseEntity<Object> userInfoByToken(@RequestBody Map<String, String> userToken) {
         String email = jwtTokenProvider.getUserPk(userToken.get("token"));
         User curUser = userService.loadUserByUsername(email);
 
@@ -80,9 +80,9 @@ public class UserController {
     }
 
     //현재 유저 정보 - id로 조회
-    @GetMapping("/userinfo/{id}")
-    public ResponseEntity<Object> curUserInfo(@PathVariable String id) {
-        User curUser = userService.findUserById(Long.parseLong(id));
+    @GetMapping("/userinfo/{userId}")
+    public ResponseEntity<Object> userInfoById(@PathVariable String userId) {
+        User curUser = userService.findUserById(Long.parseLong(userId));
 
         return new ResponseEntity<>(curUser, HttpStatus.OK);
     }

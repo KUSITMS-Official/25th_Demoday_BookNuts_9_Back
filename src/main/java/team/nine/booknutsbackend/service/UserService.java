@@ -22,10 +22,10 @@ public class UserService implements UserDetailsService {
         return userRepository.existsByNickname(nickname);
     }
 
-    //유저 아이디 중복 체크
+    //유저 로그인 아이디 중복 체크
     @Transactional(readOnly = true)
-    public boolean checkUserIdDuplication(String userId) {
-        return userRepository.existsByUserId(userId);
+    public boolean checkLoginIdDuplication(String loginId) {
+        return userRepository.existsByLoginId(loginId);
     }
 
     //회원가입

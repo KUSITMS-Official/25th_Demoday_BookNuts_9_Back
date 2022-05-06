@@ -21,10 +21,10 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     @Column(length = 100, nullable = false, unique = true)
-    private String userId;
+    private String loginId;
 
     @Column(length = 300, nullable = false)
     private String password;
