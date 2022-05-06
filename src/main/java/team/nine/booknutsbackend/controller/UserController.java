@@ -10,6 +10,7 @@ import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.exception.user.PasswordErrorException;
 import team.nine.booknutsbackend.service.UserService;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,20 +71,19 @@ public class UserController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    //현재 유저 정보 - 토큰으로 조회
-    @PostMapping("/userinfo")
-    public ResponseEntity<Object> userInfoByToken(@RequestBody Map<String, String> userToken) {
-        String email = jwtTokenProvider.getUserPk(userToken.get("token"));
-        User curUser = userService.loadUserByUsername(email);
+    //현재 유저 정보 - 헤더 토큰으로 조회
+    @GetMapping("/userinfo")
+    public ResponseEntity<Object> userInfoByHeaderToken(Principal principal) {
+        User user = userService.loadUserByUsername(principal.getName());
 
-        return new ResponseEntity<>(curUser, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     //현재 유저 정보 - id로 조회
     @GetMapping("/userinfo/{userId}")
     public ResponseEntity<Object> userInfoById(@PathVariable String userId) {
-        User curUser = userService.findUserById(Long.parseLong(userId));
+        User user = userService.findUserById(Long.parseLong(userId));
 
-        return new ResponseEntity<>(curUser, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
