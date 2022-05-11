@@ -1,4 +1,6 @@
-var stompClient = null;
+let stompClient = null;
+const greetingSubApi = '/sub/hello';
+const greetingPubApi = '/pub/hello';
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -13,12 +15,12 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var socket = new SockJS('/gs-guide-websocket');
+    var socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
+        stompClient.subscribe(greetingSubApi, function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
     });
@@ -33,7 +35,7 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+    stompClient.send(greetingPubApi, {}, JSON.stringify({'name': $("#name").val()}));
 }
 
 function showGreeting(message) {
