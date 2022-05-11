@@ -15,13 +15,14 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var socket = new SockJS('/ws');
+    const socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe(greetingSubApi, function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+            console.log(greeting);
+            //showGreeting(greeting);
         });
     });
 }
@@ -35,7 +36,8 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send(greetingPubApi, {}, JSON.stringify({'name': $("#name").val()}));
+    //stompClient.send(greetingPubApi, {}, JSON.stringify({'name': $("#name").val()}));
+    stompClient.send(greetingPubApi, {}, $("#name").val());
 }
 
 function showGreeting(message) {
