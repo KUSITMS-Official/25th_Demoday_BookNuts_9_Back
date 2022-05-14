@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.Board;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.BoardDto;
+import team.nine.booknutsbackend.exception.board.NoAccessException;
 import team.nine.booknutsbackend.service.BoardService;
 import team.nine.booknutsbackend.service.UserService;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -39,16 +42,43 @@ public class BoardController {
         return new ResponseEntity<>(BoardDto.boardResponse(saveBoard), HttpStatus.CREATED);
     }
 
+    //전체 게시글 조회
+    @GetMapping("/all")
+    public List<BoardDto> allPosts() {
+        return boardService.allPosts();
+    }
+
+    //특정 게시글 조회
+    @GetMapping("/{boardId}")
+    public ResponseEntity<BoardDto> findPost(@PathVariable Long boardId) {
+        return new ResponseEntity<>(BoardDto.boardResponse(boardService.find(boardId)), HttpStatus.OK);
+    }
+
     //게시글 수정
     @PutMapping("/{boardId}")
-    public ResponseEntity<BoardDto> update(@PathVariable Long boardId, @RequestBody Map<String, String> board) {
+    public ResponseEntity<BoardDto> update(@PathVariable Long boardId, @RequestBody Map<String, String> board, Principal principal) throws NoAccessException {
         Board originBoard = boardService.find(boardId);
+        User user = userService.loadUserByUsername(principal.getName());
 
         if (board.get("title") != null) originBoard.setTitle(board.get("title"));
         if (board.get("content") != null) originBoard.setContent(board.get("content"));
 
-        Board updateBoard = boardService.update(originBoard);
+        Board updateBoard = boardService.update(originBoard, user.getUserId());
         return new ResponseEntity<>(BoardDto.boardResponse(updateBoard), HttpStatus.OK);
+    }
+
+    //게시글 삭제
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<Object> delete(@PathVariable Long boardId, Principal principal) throws NoAccessException {
+        Board originBoard = boardService.find(boardId);
+        User user = userService.loadUserByUsername(principal.getName());
+
+        originBoard.setDeleteCheck(true);
+        Board updateBoard = boardService.update(originBoard, user.getUserId());
+
+        Map<String, String> map = new HashMap<>();
+        map.put("result", "삭제 완료");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
 }
