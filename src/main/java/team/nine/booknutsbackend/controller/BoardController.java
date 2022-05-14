@@ -35,7 +35,20 @@ public class BoardController {
         newBoard.setBookGenre(board.get("bookGenre"));
         newBoard.setUser(user);
 
-        Board saveBoard = boardService.newPost(newBoard);
+        Board saveBoard = boardService.write(newBoard);
         return new ResponseEntity<>(BoardDto.boardResponse(saveBoard), HttpStatus.CREATED);
     }
+
+    //게시글 수정
+    @PutMapping("/{boardId}")
+    public ResponseEntity<BoardDto> update(@PathVariable Long boardId, @RequestBody Map<String, String> board) {
+        Board originBoard = boardService.find(boardId);
+
+        if (board.get("title") != null) originBoard.setTitle(board.get("title"));
+        if (board.get("content") != null) originBoard.setContent(board.get("content"));
+
+        Board updateBoard = boardService.update(originBoard);
+        return new ResponseEntity<>(BoardDto.boardResponse(updateBoard), HttpStatus.OK);
+    }
+
 }
