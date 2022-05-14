@@ -6,6 +6,8 @@ import team.nine.booknutsbackend.domain.User;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Setter
@@ -24,7 +26,7 @@ public class MyStory {
     @Column(length = 100, nullable = false)
     private String imgUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name ="user")
     private User user;
 }
