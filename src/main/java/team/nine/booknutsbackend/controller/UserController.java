@@ -12,7 +12,7 @@ import team.nine.booknutsbackend.service.UserService;
 
 import java.security.Principal;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -66,7 +66,8 @@ public class UserController {
         String token = jwtTokenProvider.createToken(loginUser.getUsername(), loginUser.getRoles()); //getUsername -> 이메일 반환
         userService.updateToken(loginUser.getUserId(), token);
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("nickname", loginUser.getNickname());
         map.put("token", token);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
