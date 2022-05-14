@@ -36,7 +36,6 @@ public class UserController {
         newUser.setNickname(user.get("nickname"));
         newUser.setEmail(user.get("email"));
         newUser.setRoles(Collections.singletonList("ROLE_USER"));
-        newUser.setAccessToken("");
 
         User saveUser = userService.join(newUser);
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
@@ -80,11 +79,4 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    //현재 유저 정보 - id로 조회
-    @GetMapping("/userinfo/{userId}")
-    public ResponseEntity<Object> userInfoById(@PathVariable String userId) {
-        User user = userService.findUserById(Long.parseLong(userId));
-
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
 }
