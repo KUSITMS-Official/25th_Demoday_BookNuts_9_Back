@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.Board;
 import team.nine.booknutsbackend.domain.User;
+import team.nine.booknutsbackend.dto.BoardDto;
 import team.nine.booknutsbackend.service.BoardService;
 import team.nine.booknutsbackend.service.UserService;
 
@@ -22,7 +23,7 @@ public class BoardController {
 
     //게시글 작성
     @PostMapping("/write")
-    public ResponseEntity<Object> write(@RequestBody Map<String, String> board, Principal principal) {
+    public ResponseEntity<BoardDto> write(@RequestBody Map<String, String> board, Principal principal) {
 
         User user = userService.loadUserByUsername(principal.getName());
 
@@ -35,6 +36,6 @@ public class BoardController {
         newBoard.setUser(user);
 
         Board saveBoard = boardService.newPost(newBoard);
-        return new ResponseEntity<>(saveBoard, HttpStatus.CREATED);
+        return new ResponseEntity<>(BoardDto.boardResponse(saveBoard), HttpStatus.CREATED);
     }
 }
