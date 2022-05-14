@@ -23,7 +23,7 @@ public class Discussion {
     private String bookImgUrl;
 
     @Column(length = 100, nullable = false)
-    private int bookGenre; //0 : 소설, ..
+    private String bookGenre;
 
     @Column(length = 100, nullable = false)
     private String topic;
