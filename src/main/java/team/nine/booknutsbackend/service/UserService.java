@@ -35,6 +35,7 @@ public class UserService implements UserDetailsService {
     }
 
     //이메일로 유저 정보 조회
+    @Transactional(readOnly = true)
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
@@ -49,6 +50,7 @@ public class UserService implements UserDetailsService {
     }
 
     //토큰 업데이트
+    @Transactional
     public void updateToken(Long id, String token) {
         User user = findUserById(id);
         user.setAccessToken(token);
