@@ -39,7 +39,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(length = 300)
-    private String accessToken;
+    private String accessToken = "";
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
