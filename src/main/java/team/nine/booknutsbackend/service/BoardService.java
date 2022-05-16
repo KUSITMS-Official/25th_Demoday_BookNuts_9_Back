@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.nine.booknutsbackend.domain.Board;
+import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.BoardDto;
 import team.nine.booknutsbackend.exception.board.BoardNotFoundException;
 import team.nine.booknutsbackend.exception.board.NoAccessException;
@@ -27,12 +28,12 @@ public class BoardService {
 
     //모든 게시글 조회
     @Transactional(readOnly = true)
-    public List<BoardDto> allPosts() {
+    public List<BoardDto> allPosts(User user) {
         List<Board> boards = boardRepository.findAll();
         List<BoardDto> boardDtoList = new ArrayList<>();
 
         for (Board board : boards) {
-            if (!board.getDeleteCheck()) boardDtoList.add(BoardDto.boardResponse(board));
+            if (!board.getDeleteCheck()) boardDtoList.add(BoardDto.boardResponse(board, user));
         }
 
         Collections.reverse(boardDtoList); //최신순

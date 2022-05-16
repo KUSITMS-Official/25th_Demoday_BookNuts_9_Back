@@ -27,9 +27,7 @@ public class BoardController {
     //게시글 작성
     @PostMapping("/write")
     public ResponseEntity<BoardDto> write(@RequestBody Map<String, String> board, Principal principal) {
-
         User user = userService.loadUserByUsername(principal.getName());
-
         Board newBoard = new Board();
         newBoard.setTitle(board.get("title"));
         newBoard.setContent(board.get("content"));
@@ -39,19 +37,21 @@ public class BoardController {
         newBoard.setUser(user);
 
         Board saveBoard = boardService.write(newBoard);
-        return new ResponseEntity<>(BoardDto.boardResponse(saveBoard), HttpStatus.CREATED);
+        return new ResponseEntity<>(BoardDto.boardResponse(saveBoard, user), HttpStatus.CREATED);
     }
 
     //전체 게시글 조회
     @GetMapping("/all")
-    public List<BoardDto> allPosts() {
-        return boardService.allPosts();
+    public List<BoardDto> allPosts(Principal principal) {
+        User user = userService.loadUserByUsername(principal.getName());
+        return boardService.allPosts(user);
     }
 
     //특정 게시글 조회
     @GetMapping("/{boardId}")
-    public ResponseEntity<BoardDto> findPost(@PathVariable Long boardId) {
-        return new ResponseEntity<>(BoardDto.boardResponse(boardService.find(boardId)), HttpStatus.OK);
+    public ResponseEntity<BoardDto> findPost(@PathVariable Long boardId, Principal principal) {
+        User user = userService.loadUserByUsername(principal.getName());
+        return new ResponseEntity<>(BoardDto.boardResponse(boardService.find(boardId), user), HttpStatus.OK);
     }
 
     //게시글 수정
@@ -64,7 +64,7 @@ public class BoardController {
         if (board.get("content") != null) originBoard.setContent(board.get("content"));
 
         Board updateBoard = boardService.update(originBoard, user.getUserId());
-        return new ResponseEntity<>(BoardDto.boardResponse(updateBoard), HttpStatus.OK);
+        return new ResponseEntity<>(BoardDto.boardResponse(updateBoard, user), HttpStatus.OK);
     }
 
     //게시글 삭제

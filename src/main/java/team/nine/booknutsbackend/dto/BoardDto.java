@@ -3,8 +3,10 @@ package team.nine.booknutsbackend.dto;
 import lombok.Builder;
 import lombok.Getter;
 import team.nine.booknutsbackend.domain.Board;
+import team.nine.booknutsbackend.domain.User;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @Builder
@@ -18,8 +20,9 @@ public class BoardDto {
     String bookTitle;
     String bookImgUrl;
     String bookGenre;
+    Boolean curUser;
 
-    public static BoardDto boardResponse(Board board) {
+    public static BoardDto boardResponse(Board board, User user) {
         return BoardDto.builder()
                 .boardId(board.getBoardId())
                 .title(board.getTitle())
@@ -29,6 +32,7 @@ public class BoardDto {
                 .bookTitle(board.getBookTitle())
                 .bookImgUrl(board.getBookImgUrl())
                 .bookGenre(board.getBookGenre())
+                .curUser(Objects.equals(board.getUser().getUserId(), user.getUserId()))
                 .build();
     }
 }
