@@ -33,9 +33,8 @@ public class DiscussionController {
     }
 
     //토론장 참여 가능 여부 (가능할 경우 참여)
-    @PostMapping("/join/{roomId}")
-    public Boolean joinRoom(@PathVariable Long roomId, @RequestBody RoomRequest yesno) {
-        int opinion = yesno.getYesno();
+    @GetMapping("/join/{roomId}")
+    public Boolean joinRoom(@PathVariable Long roomId, @RequestParam int opinion) {
         Boolean canJoin = discussionService.joinRoomCheck(roomId, opinion);
 
         if (canJoin) {
@@ -47,9 +46,8 @@ public class DiscussionController {
     }
 
     //토론장 나가기
-    @PostMapping("/exit/{roomId}")
-    public ResponseEntity<Object> exitRoom(@PathVariable Long roomId, @RequestBody RoomRequest yesno) {
-        int opinion = yesno.getYesno();
+    @GetMapping("/exit/{roomId}")
+    public ResponseEntity<Object> exitRoom(@PathVariable Long roomId, @RequestParam int opinion) {
         discussionService.updateExit(roomId, opinion);
 
         Map<String, String> map = new HashMap<>();
