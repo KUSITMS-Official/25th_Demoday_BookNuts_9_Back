@@ -15,7 +15,6 @@ public class BoardDto {
     String content;
     String writer;
     LocalDateTime createdDate;
-    Boolean deleteCheck;
     String bookTitle;
     String bookImgUrl;
     String bookGenre;
@@ -27,7 +26,6 @@ public class BoardDto {
                 .content(board.getContent())
                 .writer(board.getUser().getNickname())
                 .createdDate(board.getCreatedDate())
-                .deleteCheck(board.getDeleteCheck())
                 .bookTitle(board.getBookTitle())
                 .bookImgUrl(board.getBookImgUrl())
                 .bookGenre(board.getBookGenre())
