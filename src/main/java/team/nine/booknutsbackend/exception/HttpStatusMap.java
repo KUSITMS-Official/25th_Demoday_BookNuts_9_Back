@@ -27,6 +27,7 @@ public class HttpStatusMap {
             case "ExpiredJwtException":     //토큰 관련 예외
             case "MalformedJwtException":
             case "UnsupportedJwtException":
+            case "UnAuthTokenException":
                 code = HttpStatus.UNAUTHORIZED;
                 break;
             default:
