@@ -16,8 +16,8 @@ public class RoomDto {
     String topic;
     String coverImgUrl;
     int type;
-    Long curYesUser;
-    Long curNoUser;
+    int curYesUser;
+    int curNoUser;
     int status;
     String owner;
 
