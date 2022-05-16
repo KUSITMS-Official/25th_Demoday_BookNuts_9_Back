@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -24,7 +25,7 @@ public class Board {
     private String content;
 
     @Column(nullable = false)
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private String createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
     @Column(nullable = false)
     private Boolean deleteCheck = false; //true : 삭제됨

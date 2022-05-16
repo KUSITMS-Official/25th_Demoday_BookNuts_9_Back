@@ -5,7 +5,6 @@ import lombok.Getter;
 import team.nine.booknutsbackend.domain.Board;
 import team.nine.booknutsbackend.domain.User;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -16,7 +15,7 @@ public class BoardResponse {
     String title;
     String content;
     String writer;
-    LocalDateTime createdDate;
+    String createdDate;
     String bookTitle;
     String bookImgUrl;
     String bookGenre;

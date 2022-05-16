@@ -7,6 +7,7 @@ import team.nine.booknutsbackend.domain.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -26,7 +27,7 @@ public class ChildReply {
     private int depth = 2; //자식 댓글은 무조건 depth = 2
 
     @Column(nullable = false)
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private String createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
     @Column(nullable = false)
     private Boolean deleteCheck = false; //true : 삭제됨
