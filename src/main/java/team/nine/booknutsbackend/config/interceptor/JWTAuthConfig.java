@@ -15,6 +15,6 @@ public class JWTAuthConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtAuthInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/auth/join", "/auth/login"); //예외 처리할 주소
+                .excludePathPatterns("/auth/**"); //예외 처리할 주소
     }
 }

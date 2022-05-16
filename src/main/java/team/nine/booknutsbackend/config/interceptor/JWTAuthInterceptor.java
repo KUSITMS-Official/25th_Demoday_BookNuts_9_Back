@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import team.nine.booknutsbackend.config.JwtTokenProvider;
+import team.nine.booknutsbackend.exception.user.UnAuthTokenException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,10 +22,9 @@ public class JWTAuthInterceptor implements HandlerInterceptor {
 
         String token = jwtTokenProvider.resolveToken(request);
 
-//        // 테스트 위해 임시로 주석 처리
-//        if (!jwtTokenProvider.validateToken(token)) {
-//            throw new Exception("유효하지 않은 X-AUTH-TOKEN");
-//        }
+        if (!jwtTokenProvider.validateToken(token)) {
+            throw new UnAuthTokenException("유효하지 않은 X-AUTH-TOKEN");
+        }
 
         return true;
     }
