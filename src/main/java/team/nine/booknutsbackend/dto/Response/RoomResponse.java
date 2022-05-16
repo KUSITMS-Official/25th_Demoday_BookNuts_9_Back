@@ -3,7 +3,6 @@ package team.nine.booknutsbackend.dto.Response;
 import lombok.Builder;
 import lombok.Getter;
 import team.nine.booknutsbackend.domain.Discussion;
-import team.nine.booknutsbackend.domain.User;
 
 @Getter
 @Builder
@@ -21,7 +20,7 @@ public class RoomResponse {
     int status;
     String owner;
 
-    public static RoomResponse roomResponse(Discussion room, User user) {
+    public static RoomResponse roomResponse(Discussion room) {
         return RoomResponse.builder()
                 .roomId(room.getDiscussionId())
                 .bookTitle(room.getBookTitle())
@@ -33,8 +32,7 @@ public class RoomResponse {
                 .curYesUser(room.getCurYesUser())
                 .curNoUser(room.getCurNoUser())
                 .status(room.getStatus())
-                .owner(user.getNickname())
+                .owner(room.getUser().getNickname())
                 .build();
     }
-
 }
