@@ -1,4 +1,4 @@
-package team.nine.booknutsbackend.dto;
+package team.nine.booknutsbackend.dto.Response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import team.nine.booknutsbackend.domain.User;
 
 @Getter
 @Builder
-public class RoomDto {
+public class RoomResponse {
 
     Long roomId;
     String bookTitle;
@@ -21,8 +21,8 @@ public class RoomDto {
     int status;
     String owner;
 
-    public static RoomDto roomResponse(Discussion room, User user) {
-        return RoomDto.builder()
+    public static RoomResponse roomResponse(Discussion room, User user) {
+        return RoomResponse.builder()
                 .roomId(room.getDiscussionId())
                 .bookTitle(room.getBookTitle())
                 .bookImgUrl(room.getBookImgUrl())

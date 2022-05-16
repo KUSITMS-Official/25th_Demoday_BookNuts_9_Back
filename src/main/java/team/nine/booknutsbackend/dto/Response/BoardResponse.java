@@ -1,4 +1,4 @@
-package team.nine.booknutsbackend.dto;
+package team.nine.booknutsbackend.dto.Response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Getter
 @Builder
-public class BoardDto {
+public class BoardResponse {
 
     Long boardId;
     String title;
@@ -22,8 +22,8 @@ public class BoardDto {
     String bookGenre;
     Boolean curUser;
 
-    public static BoardDto boardResponse(Board board, User user) {
-        return BoardDto.builder()
+    public static BoardResponse boardResponse(Board board, User user) {
+        return BoardResponse.builder()
                 .boardId(board.getBoardId())
                 .title(board.getTitle())
                 .content(board.getContent())
