@@ -23,7 +23,7 @@ public class MyStory {
     @Column(nullable = false)
     private String content;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 300, nullable = false)
     private String imgUrl;
 
     @ManyToOne(fetch = LAZY)

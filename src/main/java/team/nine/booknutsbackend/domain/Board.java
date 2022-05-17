@@ -21,7 +21,7 @@ public class Board {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     @Column(nullable = false)
@@ -33,7 +33,7 @@ public class Board {
     @Column(length = 100, nullable = false)
     private String bookTitle;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 300, nullable = false)
     private String bookImgUrl;
 
     @Column(length = 100, nullable = false)

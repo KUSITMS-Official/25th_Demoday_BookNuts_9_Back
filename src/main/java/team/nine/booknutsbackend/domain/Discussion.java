@@ -19,7 +19,7 @@ public class Discussion {
     @Column(length = 100, nullable = false)
     private String bookTitle;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 300, nullable = false)
     private String bookImgUrl;
 
     @Column(length = 100, nullable = false)
@@ -28,7 +28,7 @@ public class Discussion {
     @Column(length = 100, nullable = false)
     private String topic;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 300, nullable = false)
     private String coverImgUrl;
 
     @Column(length = 100, nullable = false)
