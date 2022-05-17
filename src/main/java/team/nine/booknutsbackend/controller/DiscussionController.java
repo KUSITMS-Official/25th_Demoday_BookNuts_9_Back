@@ -76,12 +76,14 @@ public class DiscussionController {
     }
 
     //토론 리스트 반환
-    @GetMapping("/list")
-    public ResponseEntity<Object> roomList() {
+    //텍스트 = 0, 음성 = 1, 전체 = 2
+    @GetMapping("/list/{type}")
+    public ResponseEntity<Object> roomList(@PathVariable int type) {
         Map<String, List<DiscussionListResponse>> map = new LinkedHashMap<>();
-        map.put("맞춤 토론", discussionService.customDiscuss());
-        map.put("현재 진행 중인 토론", discussionService.ingDiscuss());
-        map.put("현재 대기 중인 토론", discussionService.readyDiscuss());
+        map.put("맞춤 토론", discussionService.customDiscuss(type));
+        map.put("현재 진행 중인 토론", discussionService.ingDiscuss(type));
+        map.put("현재 대기 중인 토론", discussionService.readyDiscuss(type));
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
 }

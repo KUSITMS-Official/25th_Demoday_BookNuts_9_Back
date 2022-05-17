@@ -97,8 +97,8 @@ public class DiscussionService {
 
     //맞춤 토론 리스트
     @Transactional(readOnly = true)
-    public List<DiscussionListResponse> customDiscuss() {
-        List<Discussion> rooms = discussionRepository.findAll();
+    public List<DiscussionListResponse> customDiscuss(int type) {
+        List<Discussion> rooms = findRoomByType(type);
         List<DiscussionListResponse> roomDtoList = new ArrayList<>();
 
         //임의로,토론 대기 중 상태인 3개 토론을 반환
@@ -116,8 +116,8 @@ public class DiscussionService {
 
     //현재 진행 중인 토론 리스트
     @Transactional(readOnly = true)
-    public List<DiscussionListResponse> ingDiscuss() {
-        List<Discussion> rooms = discussionRepository.findAll();
+    public List<DiscussionListResponse> ingDiscuss(int type) {
+        List<Discussion> rooms = findRoomByType(type);
         List<DiscussionListResponse> roomDtoList = new ArrayList<>();
 
         for (Discussion room : rooms) {
@@ -132,8 +132,8 @@ public class DiscussionService {
 
     //현재 대기 중인 토론 리스트
     @Transactional(readOnly = true)
-    public List<DiscussionListResponse> readyDiscuss() {
-        List<Discussion> rooms = discussionRepository.findAll();
+    public List<DiscussionListResponse> readyDiscuss(int type) {
+        List<Discussion> rooms = findRoomByType(type);
         List<DiscussionListResponse> roomDtoList = new ArrayList<>();
 
         for (Discussion room : rooms) {
@@ -145,4 +145,12 @@ public class DiscussionService {
         Collections.reverse(roomDtoList); //최신순
         return roomDtoList;
     }
+
+    //타입별 토론방 반환
+    @Transactional(readOnly = true)
+    public List<Discussion> findRoomByType(int type) {
+        if (type == 0 || type == 1) return discussionRepository.findByType(type);
+        else return discussionRepository.findAll();
+    }
+
 }
