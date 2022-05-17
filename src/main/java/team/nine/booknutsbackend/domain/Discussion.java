@@ -19,7 +19,7 @@ public class Discussion {
     @Column(length = 100, nullable = false)
     private String bookTitle;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 300, nullable = false)
     private String bookImgUrl;
 
     @Column(length = 100, nullable = false)
@@ -28,20 +28,23 @@ public class Discussion {
     @Column(length = 100, nullable = false)
     private String topic;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 300, nullable = false)
     private String coverImgUrl;
 
     @Column(length = 100, nullable = false)
     private int type; //0 : 채팅, 1 : 음성
 
     @Column(length = 100, nullable = false)
-    private Long yesUser; //찬성 유저 수
+    private int maxUser; //총 토론 참여자 수 (2,4,6,8)
 
     @Column(length = 100, nullable = false)
-    private Long noUser; //반대 유저 수
+    private int curYesUser; //현재 참여한 찬성 유저 수
 
     @Column(length = 100, nullable = false)
-    private int status; //0 : 토론 대기 중, 1 : 토론 진행 중, 2 : 토론 종료
+    private int curNoUser; //현재 참여한 반대 유저 수
+
+    @Column(length = 100, nullable = false)
+    private int status = 0; //0 : 토론 대기 중, 1 : 토론 진행 중, 2 : 토론 종료
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name ="owner")
