@@ -22,7 +22,7 @@ public class Archive {
     @JoinColumn(name ="user")
     private User user;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 300, nullable = false)
     private String imgUrl;
 
 }

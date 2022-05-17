@@ -7,11 +7,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.config.JwtTokenProvider;
 import team.nine.booknutsbackend.domain.User;
+import team.nine.booknutsbackend.dto.Request.UserRequest;
 import team.nine.booknutsbackend.exception.user.PasswordErrorException;
 import team.nine.booknutsbackend.service.UserService;
 
+import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -27,17 +28,8 @@ public class UserController {
 
     //회원가입
     @PostMapping("/join")
-    public ResponseEntity<Object> join(@RequestBody Map<String, String> user) {
-
-        User newUser = new User();
-        newUser.setLoginId(user.get("loginId"));
-        newUser.setPassword(passwordEncoder.encode(user.get("password")));
-        newUser.setUsername(user.get("username"));
-        newUser.setNickname(user.get("nickname"));
-        newUser.setEmail(user.get("email"));
-        newUser.setRoles(Collections.singletonList("ROLE_USER"));
-
-        User saveUser = userService.join(newUser);
+    public ResponseEntity<Object> join(@RequestBody @Valid UserRequest user) {
+        User saveUser = userService.join(UserRequest.newUser(user, passwordEncoder.encode(user.getPassword())));
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
 
@@ -55,9 +47,9 @@ public class UserController {
 
     //로그인
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody Map<String, String> user) {
-        User loginUser = userService.loadUserByUsername(user.get("email"));
-        if (!passwordEncoder.matches(user.get("password"), loginUser.getPassword())) {
+    public ResponseEntity<Object> login(@RequestBody UserRequest user) {
+        User loginUser = userService.loadUserByUsername(user.getEmail());
+        if (!passwordEncoder.matches(user.getPassword(), loginUser.getPassword())) {
             throw new PasswordErrorException("잘못된 비밀번호입니다.");
         }
 
