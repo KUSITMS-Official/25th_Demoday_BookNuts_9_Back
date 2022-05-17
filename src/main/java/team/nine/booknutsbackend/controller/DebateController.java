@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team.nine.booknutsbackend.domain.Debate;
+import team.nine.booknutsbackend.domain.Debate.DebateRoom;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.DebateRoomRequest;
-import team.nine.booknutsbackend.dto.Response.DebateListResponse;
-import team.nine.booknutsbackend.dto.Response.RoomResponse;
+import team.nine.booknutsbackend.dto.Response.DebateRoomResponse;
 import team.nine.booknutsbackend.exception.Debate.OpinionValueException;
 import team.nine.booknutsbackend.exception.Debate.StatusValueException;
 import team.nine.booknutsbackend.service.DebateService;
@@ -31,10 +30,10 @@ public class DebateController {
 
     //토론장 개설
     @PostMapping("/create")
-    public ResponseEntity<RoomResponse> createRoom(@RequestBody @Valid DebateRoomRequest room, Principal principal) {
+    public ResponseEntity<DebateRoomResponse> createRoom(@RequestBody @Valid DebateRoomRequest room, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        Debate saveRoom = debateService.createRoom(DebateRoomRequest.newRoom(room, user));
-        return new ResponseEntity<>(RoomResponse.roomResponse(saveRoom), HttpStatus.CREATED);
+        DebateRoom saveRoom = debateService.createRoom(DebateRoomRequest.newRoom(room, user));
+        return new ResponseEntity<>(DebateRoomResponse.roomResponse(saveRoom), HttpStatus.CREATED);
     }
 
     //토론장 참여 가능 여부 (가능할 경우 참여)
@@ -79,7 +78,7 @@ public class DebateController {
     //텍스트 = 0, 음성 = 1, 전체 = 2
     @GetMapping("/list/{type}")
     public ResponseEntity<Object> roomList(@PathVariable int type) {
-        Map<String, List<DebateListResponse>> map = new LinkedHashMap<>();
+        Map<String, List<DebateRoomResponse>> map = new LinkedHashMap<>();
         map.put("맞춤 토론", debateService.customDebate(type));
         map.put("현재 진행 중인 토론", debateService.ingDebate(type));
         map.put("현재 대기 중인 토론", debateService.readyDebate(type));

@@ -1,7 +1,7 @@
 package team.nine.booknutsbackend.dto.Request;
 
 import lombok.Getter;
-import team.nine.booknutsbackend.domain.Debate;
+import team.nine.booknutsbackend.domain.Debate.DebateRoom;
 import team.nine.booknutsbackend.domain.User;
 
 import javax.validation.constraints.NotBlank;
@@ -22,8 +22,8 @@ public class DebateRoomRequest {
     int curYesUser;
     int curNoUser;
 
-    public static Debate newRoom(DebateRoomRequest roomRequest, User user) {
-        Debate room = new Debate();
+    public static DebateRoom newRoom(DebateRoomRequest roomRequest, User user) {
+        DebateRoom room = new DebateRoom();
         room.setBookTitle(roomRequest.getBookTitle());
         room.setBookImgUrl(roomRequest.getBookImgUrl());
         room.setBookGenre(roomRequest.getBookGenre());
