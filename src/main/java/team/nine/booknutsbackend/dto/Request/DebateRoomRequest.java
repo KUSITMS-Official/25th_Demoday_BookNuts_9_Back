@@ -17,10 +17,8 @@ public class DebateRoomRequest {
     @NotBlank String coverImgUrl;
     @NotNull int type;
     @NotNull int maxUser;
-    @NotNull int yesno;
-    int status;
-    int curYesUser;
-    int curNoUser;
+    @NotNull boolean opinion;
+    User owner;
 
     public static DebateRoom newRoom(DebateRoomRequest roomRequest, User user) {
         DebateRoom room = new DebateRoom();
@@ -31,19 +29,7 @@ public class DebateRoomRequest {
         room.setCoverImgUrl(roomRequest.getCoverImgUrl());
         room.setType(roomRequest.getType());
         room.setMaxUser(roomRequest.getMaxUser());
-        room.setUser(user);
-
-        //개설자가 '반대'일 경우
-        if (roomRequest.getYesno() == 0) {
-            room.setCurYesUser(0);
-            room.setCurNoUser(1);
-        }
-
-        //개설자가 '찬성'일 경우
-        else {
-            room.setCurYesUser(1);
-            room.setCurNoUser(0);
-        }
+        room.setOwner(user);
 
         return room;
     }

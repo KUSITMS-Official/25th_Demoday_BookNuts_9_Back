@@ -5,6 +5,6 @@ import team.nine.booknutsbackend.domain.Debate.DebateRoom;
 
 import java.util.List;
 
-public interface DebateRepository extends JpaRepository<DebateRoom, Long> {
+public interface DebateRoomRepository extends JpaRepository<DebateRoom, Long> {
     List<DebateRoom> findByType(int type);
 }

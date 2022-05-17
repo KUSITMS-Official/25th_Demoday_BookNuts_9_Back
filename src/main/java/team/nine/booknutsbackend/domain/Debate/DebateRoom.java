@@ -49,5 +49,5 @@ public class DebateRoom {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name ="owner")
-    private User user;
+    private User owner;
 }

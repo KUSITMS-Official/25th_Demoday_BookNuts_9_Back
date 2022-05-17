@@ -32,7 +32,7 @@ public class DebateRoomResponse {
                 .curYesUser(room.getCurYesUser())
                 .curNoUser(room.getCurNoUser())
                 .status(room.getStatus())
-                .owner(room.getUser().getNickname())
+                .owner(room.getOwner().getNickname())
                 .build();
     }
 }
