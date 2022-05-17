@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.Discussion;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.RoomRequest;
+import team.nine.booknutsbackend.dto.Response.DiscussionListResponse;
 import team.nine.booknutsbackend.dto.Response.RoomResponse;
 import team.nine.booknutsbackend.exception.Discussion.OpinionValueException;
 import team.nine.booknutsbackend.exception.Discussion.StatusValueException;
@@ -16,6 +17,8 @@ import team.nine.booknutsbackend.service.UserService;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -69,6 +72,16 @@ public class DiscussionController {
         discussionService.updateStatus(roomId, status);
         Map<String, String> map = new HashMap<>();
         map.put("result", "상태 변경 완료");
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    //토론 리스트 반환
+    @GetMapping("/list")
+    public ResponseEntity<Object> roomList() {
+        Map<String, List<DiscussionListResponse>> map = new LinkedHashMap<>();
+        map.put("맞춤 토론", discussionService.customDiscuss());
+        map.put("현재 진행 중인 토론", discussionService.ingDiscuss());
+        map.put("현재 대기 중인 토론", discussionService.readyDiscuss());
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
