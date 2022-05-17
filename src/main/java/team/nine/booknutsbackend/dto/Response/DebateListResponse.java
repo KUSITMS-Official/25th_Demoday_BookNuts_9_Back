@@ -2,11 +2,11 @@ package team.nine.booknutsbackend.dto.Response;
 
 import lombok.Builder;
 import lombok.Getter;
-import team.nine.booknutsbackend.domain.Discussion;
+import team.nine.booknutsbackend.domain.Debate;
 
 @Getter
 @Builder
-public class DiscussionListResponse {
+public class DebateListResponse {
 
     Long roomId;
     String coverImgUrl;
@@ -17,9 +17,9 @@ public class DiscussionListResponse {
     int curNoUser;
     String owner;
 
-    public static DiscussionListResponse listResponse(Discussion room) {
-        return DiscussionListResponse.builder()
-                .roomId(room.getDiscussionId())
+    public static DebateListResponse listResponse(Debate room) {
+        return DebateListResponse.builder()
+                .roomId(room.getDebateId())
                 .coverImgUrl(room.getCoverImgUrl())
                 .topic(room.getTopic())
                 .bookTitle(room.getBookTitle())

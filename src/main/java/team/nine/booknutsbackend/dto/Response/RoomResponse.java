@@ -2,7 +2,7 @@ package team.nine.booknutsbackend.dto.Response;
 
 import lombok.Builder;
 import lombok.Getter;
-import team.nine.booknutsbackend.domain.Discussion;
+import team.nine.booknutsbackend.domain.Debate;
 
 @Getter
 @Builder
@@ -20,9 +20,9 @@ public class RoomResponse {
     int status;
     String owner;
 
-    public static RoomResponse roomResponse(Discussion room) {
+    public static RoomResponse roomResponse(Debate room) {
         return RoomResponse.builder()
-                .roomId(room.getDiscussionId())
+                .roomId(room.getDebateId())
                 .bookTitle(room.getBookTitle())
                 .bookImgUrl(room.getBookImgUrl())
                 .bookGenre(room.getBookGenre())

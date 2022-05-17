@@ -10,11 +10,11 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @Setter
-public class Discussion {
+public class Debate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long discussionId;
+    private Long debateId;
 
     @Column(length = 100, nullable = false)
     private String bookTitle;
