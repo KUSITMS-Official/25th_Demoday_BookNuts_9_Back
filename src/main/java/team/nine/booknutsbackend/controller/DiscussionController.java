@@ -8,6 +8,7 @@ import team.nine.booknutsbackend.domain.Discussion;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.RoomRequest;
 import team.nine.booknutsbackend.dto.Response.RoomResponse;
+import team.nine.booknutsbackend.exception.Discussion.OpinionValueException;
 import team.nine.booknutsbackend.exception.Discussion.StatusValueException;
 import team.nine.booknutsbackend.service.DiscussionService;
 import team.nine.booknutsbackend.service.UserService;
@@ -35,7 +36,7 @@ public class DiscussionController {
 
     //토론장 참여 가능 여부 (가능할 경우 참여)
     @GetMapping("/join/{roomId}")
-    public Boolean joinRoom(@PathVariable Long roomId, @RequestParam int opinion) {
+    public Boolean joinRoom(@PathVariable Long roomId, @RequestParam int opinion) throws OpinionValueException {
         Boolean canJoin = discussionService.joinRoomCheck(roomId, opinion);
 
         if (canJoin) {
@@ -48,7 +49,7 @@ public class DiscussionController {
 
     //토론장 나가기
     @GetMapping("/exit/{roomId}")
-    public ResponseEntity<Object> exitRoom(@PathVariable Long roomId, @RequestParam int opinion) {
+    public ResponseEntity<Object> exitRoom(@PathVariable Long roomId, @RequestParam int opinion) throws OpinionValueException {
         discussionService.updateExit(roomId, opinion);
 
         Map<String, String> map = new HashMap<>();

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.nine.booknutsbackend.domain.Discussion;
+import team.nine.booknutsbackend.exception.Discussion.OpinionValueException;
 import team.nine.booknutsbackend.exception.Discussion.RoomNotFoundException;
 import team.nine.booknutsbackend.exception.Discussion.StatusValueException;
 import team.nine.booknutsbackend.repository.DiscussionRepository;
@@ -22,8 +23,10 @@ public class DiscussionService {
 
     //토론장 참여 가능 여부
     @Transactional(readOnly = true)
-    public Boolean joinRoomCheck(Long roomId, int opinion) {
+    public Boolean joinRoomCheck(Long roomId, int opinion) throws OpinionValueException {
         Discussion room = find(roomId);
+        if(opinion < 0 || opinion > 2) throw new OpinionValueException("찬성(= 1) 또는 반대(= 0)에 해당하는 값이어야합니다.");
+
         int status = room.getStatus();
         int sideUser = room.getMaxUser() / 2;
         int curYesUser = room.getCurYesUser();
@@ -54,8 +57,9 @@ public class DiscussionService {
 
     //토론 나가기 - 참여자수 업데이트
     @Transactional
-    public void updateExit(Long roomId, int opinion) {
+    public void updateExit(Long roomId, int opinion) throws OpinionValueException {
         Discussion room = find(roomId);
+        if(opinion < 0 || opinion > 2) throw new OpinionValueException("찬성(= 1) 또는 반대(= 0)에 해당하는 값이어야합니다.");
 
         if (opinion == 0) room.setCurNoUser(room.getCurNoUser() - 1); //'반대'유저 나가기
         else room.setCurYesUser(room.getCurYesUser() - 1); //'찬성'유저 나가기
@@ -74,10 +78,13 @@ public class DiscussionService {
         Discussion room = find(roomId);
         if(status <= 0 || status > 2) throw new StatusValueException("변경할 상태 값은 1 또는 2 여야합니다.");
 
-        if (status == 2) discussionRepository.delete(room);
-        else {
-            room.setStatus(status);
-            discussionRepository.save(room);
-        }
+//        if (status == 2) discussionRepository.delete(room);
+//        else {
+//            room.setStatus(status);
+//            discussionRepository.save(room);
+//        }
+
+        room.setStatus(status);
+        discussionRepository.save(room);
     }
 }
