@@ -10,6 +10,7 @@ public class DebateRoomResponse {
 
     Long roomId;
     String bookTitle;
+    String bookAuthor;
     String bookImgUrl;
     String bookGenre;
     String topic;
@@ -25,6 +26,7 @@ public class DebateRoomResponse {
         return DebateRoomResponse.builder()
                 .roomId(room.getDebateRoomId())
                 .bookTitle(room.getBookTitle())
+                .bookAuthor(room.getBookAuthor())
                 .bookImgUrl(room.getBookImgUrl())
                 .bookGenre(room.getBookGenre())
                 .topic(room.getTopic())

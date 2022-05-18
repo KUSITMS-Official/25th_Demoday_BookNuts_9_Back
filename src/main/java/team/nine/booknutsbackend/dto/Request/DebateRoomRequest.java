@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 public class DebateRoomRequest {
 
     @NotBlank String bookTitle;
+    @NotBlank String bookAuthor;
     @NotBlank String bookImgUrl;
     @NotBlank String bookGenre;
     @NotBlank String topic;
@@ -23,6 +24,7 @@ public class DebateRoomRequest {
     public static DebateRoom newRoom(DebateRoomRequest roomRequest, User user) {
         DebateRoom room = new DebateRoom();
         room.setBookTitle(roomRequest.getBookTitle());
+        room.setBookAuthor(roomRequest.getBookAuthor());
         room.setBookImgUrl(roomRequest.getBookImgUrl());
         room.setBookGenre(roomRequest.getBookGenre());
         room.setTopic(roomRequest.getTopic());
