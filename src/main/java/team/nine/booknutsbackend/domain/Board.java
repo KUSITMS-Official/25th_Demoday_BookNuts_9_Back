@@ -30,6 +30,9 @@ public class Board {
     @Column(length = 100, nullable = false)
     private String bookTitle;
 
+    @Column(length = 100, nullable = false)
+    private String bookAuthor;
+
     @Column(length = 300, nullable = false)
     private String bookImgUrl;
 

@@ -12,6 +12,7 @@ public class BoardRequest {
     @NotBlank String title;
     @NotBlank String content;
     @NotBlank String bookTitle;
+    @NotBlank String bookAuthor;
     @NotBlank String bookImgUrl;
     @NotBlank String bookGenre;
 
@@ -20,6 +21,7 @@ public class BoardRequest {
         board.setTitle(boardRequest.getTitle());
         board.setContent(boardRequest.getContent());
         board.setBookTitle(boardRequest.getBookTitle());
+        board.setBookAuthor(boardRequest.getBookAuthor());
         board.setBookImgUrl(boardRequest.getBookImgUrl());
         board.setBookGenre(boardRequest.getBookGenre());
         board.setUser(user);
