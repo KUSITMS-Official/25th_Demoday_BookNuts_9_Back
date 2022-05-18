@@ -36,7 +36,7 @@ public class DebateService {
         int curYesUser = room.getCurYesUser();
         int curNoUser = room.getCurNoUser();
 
-        Map<String, Boolean> map = new HashMap<>();
+        Map<String, Boolean> map = new LinkedHashMap<>();
         map.put("canJoinYes", sideUser > curYesUser);
         map.put("canJoinNo", sideUser > curNoUser);
         return map;
