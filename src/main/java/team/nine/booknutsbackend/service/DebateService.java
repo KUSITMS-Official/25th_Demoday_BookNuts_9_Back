@@ -6,14 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import team.nine.booknutsbackend.domain.Debate.DebateRoom;
 import team.nine.booknutsbackend.domain.Debate.DebateUser;
 import team.nine.booknutsbackend.domain.User;
+import team.nine.booknutsbackend.dto.Response.DebateRoomResponse;
 import team.nine.booknutsbackend.exception.Debate.CannotJoinException;
 import team.nine.booknutsbackend.exception.Debate.RoomNotFoundException;
 import team.nine.booknutsbackend.exception.Debate.StatusChangeException;
 import team.nine.booknutsbackend.repository.DebateRoomRepository;
 import team.nine.booknutsbackend.repository.DebateUserRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -95,4 +95,54 @@ public class DebateService {
         return debateRoomRepository.findById(roomId)
                 .orElseThrow(() -> new RoomNotFoundException("존재하지 않는 토론장 아이디입니다."));
     }
+
+    //맞춤 토론 리스트
+    @Transactional(readOnly = true)
+    public List<DebateRoomResponse> customDebate(int type) {
+        List<DebateRoom> rooms;
+        if(type == 2) rooms = debateRoomRepository.findByStatus(0);
+        else rooms = debateRoomRepository.findByTypeAndStatus(type, 0);
+        List<DebateRoomResponse> roomDtoList = new ArrayList<>();
+
+        //임의로, '토론 대기 중' 상태인 3개의 토론을 반환
+        int cnt = 0;
+        for (DebateRoom room : rooms) {
+            roomDtoList.add(DebateRoomResponse.roomResponse(room));
+            cnt++;
+            if(cnt == 3) break;
+        }
+
+        return roomDtoList;
+    }
+
+    //현재 진행 중인 토론 리스트
+    @Transactional(readOnly = true)
+    public List<DebateRoomResponse> ingDebate(int type) {
+        List<DebateRoom> rooms;
+        if(type == 2) rooms = debateRoomRepository.findByStatus(1);
+        else rooms = debateRoomRepository.findByTypeAndStatus(type, 1);
+        List<DebateRoomResponse> roomDtoList = new ArrayList<>();
+
+        for (DebateRoom room : rooms) {
+            roomDtoList.add(DebateRoomResponse.roomResponse(room));
+        }
+        Collections.reverse(roomDtoList); //최신순
+        return roomDtoList;
+    }
+
+    //현재 대기 중인 토론 리스트
+    @Transactional(readOnly = true)
+    public List<DebateRoomResponse> readyDebate(int type) {
+        List<DebateRoom> rooms;
+        if(type == 2) rooms = debateRoomRepository.findByStatus(0);
+        else rooms = debateRoomRepository.findByTypeAndStatus(type, 0);
+        List<DebateRoomResponse> roomDtoList = new ArrayList<>();
+
+        for (DebateRoom room : rooms) {
+            roomDtoList.add(DebateRoomResponse.roomResponse(room));
+        }
+        Collections.reverse(roomDtoList); //최신순
+        return roomDtoList;
+    }
+
 }

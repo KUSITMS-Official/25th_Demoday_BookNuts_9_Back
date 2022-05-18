@@ -16,6 +16,8 @@ import team.nine.booknutsbackend.service.UserService;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -68,4 +70,14 @@ public class DebateController {
         return new ResponseEntity<>(DebateRoomResponse.roomResponse(updateRoom), HttpStatus.OK);
     }
 
+    //토론장 리스트
+    //텍스트 = 0, 음성 = 1, 전체 = 2
+    @GetMapping("/list/{type}")
+    public ResponseEntity<Object> roomList(@PathVariable int type) {
+        Map<String, List<DebateRoomResponse>> map = new LinkedHashMap<>();
+        map.put("맞춤 토론", debateService.customDebate(type));
+        map.put("현재 진행 중인 토론", debateService.ingDebate(type));
+        map.put("현재 대기 중인 토론", debateService.readyDebate(type));
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 }

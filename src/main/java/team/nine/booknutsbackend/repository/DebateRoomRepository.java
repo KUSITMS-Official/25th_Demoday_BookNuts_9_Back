@@ -6,5 +6,6 @@ import team.nine.booknutsbackend.domain.Debate.DebateRoom;
 import java.util.List;
 
 public interface DebateRoomRepository extends JpaRepository<DebateRoom, Long> {
-    List<DebateRoom> findByType(int type);
+    List<DebateRoom> findByTypeAndStatus(int type, int status);
+    List<DebateRoom> findByStatus(int status);
 }
