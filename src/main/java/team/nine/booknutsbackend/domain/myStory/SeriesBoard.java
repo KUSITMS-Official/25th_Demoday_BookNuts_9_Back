@@ -11,15 +11,15 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @Setter
-public class MyStoryBoard {
+public class SeriesBoard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long myStoryBoardId;
+    private Long SeriesBoardId;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="myStory")
-    private MyStory myStory;
+    @JoinColumn(name ="series")
+    private Series series;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name ="board")

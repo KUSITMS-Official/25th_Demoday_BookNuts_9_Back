@@ -11,11 +11,11 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @Setter
-public class MyStory {
+public class Series {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long myStoryId;
+    private Long seriesId;
 
     @Column(length = 100, nullable = false)
     private String title;
