@@ -26,14 +26,15 @@ public class BoardService {
         return boardRepository.save(newBoard);
     }
 
-    //모든 게시글 조회
+    //게시글 조회
+    //*** 타입에 따른 반환 구현 전 ***
     @Transactional(readOnly = true)
-    public List<BoardResponse> allPosts(User user) {
+    public List<BoardResponse> boardList(User user, int type) {
         List<Board> boards = boardRepository.findAll();
         List<BoardResponse> boardDtoList = new ArrayList<>();
 
         for (Board board : boards) {
-            if (!board.getDeleteCheck()) boardDtoList.add(BoardResponse.boardResponse(board, user));
+            boardDtoList.add(BoardResponse.boardResponse(board, user));
         }
 
         Collections.reverse(boardDtoList); //최신순
@@ -42,18 +43,27 @@ public class BoardService {
 
     //특정 게시글 조회
     @Transactional(readOnly = true)
-    public Board find(Long boardId) throws BoardNotFoundException {
+    public Board findBoard(Long boardId) throws BoardNotFoundException {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글 아이디입니다."));
     }
 
-    //게시글 수정 및 삭제 (데이터 업데이트)
+    //게시글 수정
     @Transactional
-    public Board update(Board board, Long userId) throws NoAccessException {
-        if (board.getUser().getUserId() != userId) {
-            throw new NoAccessException("해당 유저는 수정/삭제 권한이 없습니다.");
-        }
+    public Board update(Board board, User user) throws NoAccessException {
+        boardRepository.findByBoardIdAndUser(board.getBoardId(), user)
+                .orElseThrow(() -> new NoAccessException("해당 유저는 수정 권한이 없습니다."));
+
         return boardRepository.save(board);
+    }
+
+    //게시글 삭제
+    @Transactional
+    public void delete(Long boardId, User user) throws NoAccessException {
+        Board board = boardRepository.findByBoardIdAndUser(boardId, user)
+                .orElseThrow(() -> new NoAccessException("해당 유저는 삭제 권한이 없습니다."));
+
+        boardRepository.delete(board);
     }
 
 }

@@ -27,9 +27,6 @@ public class Board {
     @Column(nullable = false)
     private String createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-    @Column(nullable = false)
-    private Boolean deleteCheck = false; //true : 삭제됨
-
     @Column(length = 100, nullable = false)
     private String bookTitle;
 

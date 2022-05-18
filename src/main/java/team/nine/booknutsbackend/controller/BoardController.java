@@ -34,41 +34,39 @@ public class BoardController {
         return new ResponseEntity<>(BoardResponse.boardResponse(saveBoard, user), HttpStatus.CREATED);
     }
 
-    //전체 게시글 조회
-    @GetMapping("/all")
-    public List<BoardResponse> allPosts(Principal principal) {
+    //게시글 조회
+    //나의 구독 = 0, 오늘 추천 = 1, 독립 출판 = 2
+    @GetMapping("/list/{type}")
+    public List<BoardResponse> boardList(@PathVariable int type, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        return boardService.allPosts(user);
+        return boardService.boardList(user, type);
     }
 
     //특정 게시글 조회
     @GetMapping("/{boardId}")
     public ResponseEntity<BoardResponse> findPost(@PathVariable Long boardId, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        return new ResponseEntity<>(BoardResponse.boardResponse(boardService.find(boardId), user), HttpStatus.OK);
+        return new ResponseEntity<>(BoardResponse.boardResponse(boardService.findBoard(boardId), user), HttpStatus.OK);
     }
 
     //게시글 수정
     @PutMapping("/{boardId}")
     public ResponseEntity<BoardResponse> update(@PathVariable Long boardId, @RequestBody BoardRequest board, Principal principal) throws NoAccessException {
-        Board originBoard = boardService.find(boardId);
+        Board originBoard = boardService.findBoard(boardId);
         User user = userService.loadUserByUsername(principal.getName());
 
         if (board.getTitle() != null) originBoard.setTitle(board.getTitle());
         if (board.getContent() != null) originBoard.setContent(board.getContent());
 
-        Board updateBoard = boardService.update(originBoard, user.getUserId());
+        Board updateBoard = boardService.update(originBoard, user);
         return new ResponseEntity<>(BoardResponse.boardResponse(updateBoard, user), HttpStatus.OK);
     }
 
     //게시글 삭제
     @DeleteMapping("/{boardId}")
     public ResponseEntity<Object> delete(@PathVariable Long boardId, Principal principal) throws NoAccessException {
-        Board originBoard = boardService.find(boardId);
         User user = userService.loadUserByUsername(principal.getName());
-
-        originBoard.setDeleteCheck(true);
-        Board updateBoard = boardService.update(originBoard, user.getUserId());
+        boardService.delete(boardId, user);
 
         Map<String, String> map = new HashMap<>();
         map.put("result", "삭제 완료");
