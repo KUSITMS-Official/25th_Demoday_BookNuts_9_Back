@@ -9,6 +9,7 @@ import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.DebateRoomRequest;
 import team.nine.booknutsbackend.dto.Response.DebateRoomResponse;
 import team.nine.booknutsbackend.exception.Debate.CannotJoinException;
+import team.nine.booknutsbackend.exception.Debate.StatusChangeException;
 import team.nine.booknutsbackend.service.DebateService;
 import team.nine.booknutsbackend.service.UserService;
 
@@ -57,6 +58,14 @@ public class DebateController {
         Map<String, String> map = new HashMap<>();
         map.put("result", "나가기 완료");
         return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    //토론장 상태 변경
+    @PostMapping("/update/{roomId}")
+    public ResponseEntity<DebateRoomResponse> changeStatus(@PathVariable Long roomId, @RequestParam int status, Principal principal) throws StatusChangeException {
+        User user = userService.loadUserByUsername(principal.getName());
+        DebateRoom updateRoom = debateService.changeStatus(roomId, status, user);
+        return new ResponseEntity<>(DebateRoomResponse.roomResponse(updateRoom), HttpStatus.OK);
     }
 
 }

@@ -8,6 +8,7 @@ import team.nine.booknutsbackend.domain.Debate.DebateUser;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.exception.Debate.CannotJoinException;
 import team.nine.booknutsbackend.exception.Debate.RoomNotFoundException;
+import team.nine.booknutsbackend.exception.Debate.StatusChangeException;
 import team.nine.booknutsbackend.repository.DebateRoomRepository;
 import team.nine.booknutsbackend.repository.DebateUserRepository;
 
@@ -46,7 +47,6 @@ public class DebateService {
     public DebateRoom join(Long roomId, User user, boolean opinion) throws CannotJoinException {
         DebateRoom room = findRoom(roomId);
 
-        //BE 테스트 위한 예외 처리
         if (debateUserRepository.findByDebateRoomAndUser(room, user).isPresent()) throw new CannotJoinException("이미 참여 중인 유저입니다.");
         if (room.getStatus() != 0) throw new CannotJoinException("참여할 수 없는 토론 상태입니다.");
         if (opinion && (room.getMaxUser() / 2 <= room.getCurYesUser())) throw new CannotJoinException("찬성측 인원 초과로 참여할 수 없습니다.");
@@ -67,6 +67,18 @@ public class DebateService {
         DebateUser debateUser = debateUserRepository.findByUser(user);
         debateUserRepository.delete(debateUser);
         updateCount(room);
+    }
+
+    //토론장 상태 변경
+    @Transactional
+    public DebateRoom changeStatus(Long roomId, int status, User user) throws StatusChangeException {
+        DebateRoom room = findRoom(roomId);
+
+        if(room.getOwner().getUserId() != user.getUserId()) throw new StatusChangeException("토론 개설자만 상태를 변경할 수 있습니다.");
+        if(status <= 0 || status > 2) throw new StatusChangeException("상태값은 토론 진행 중(=1) 또는 토론 종료(=2) 여야 합니다.");
+
+        room.setStatus(status);
+        return debateRoomRepository.save(room);
     }
 
     //참여 유저 수 업데이트
