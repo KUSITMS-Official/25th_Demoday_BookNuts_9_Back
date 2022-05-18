@@ -3,19 +3,19 @@ package team.nine.booknutsbackend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.Debate.DebateRoom;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.DebateRoomRequest;
 import team.nine.booknutsbackend.dto.Response.DebateRoomResponse;
+import team.nine.booknutsbackend.exception.Debate.CannotJoinException;
 import team.nine.booknutsbackend.service.DebateService;
 import team.nine.booknutsbackend.service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,11 +27,36 @@ public class DebateController {
 
     //토론장 개설
     @PostMapping("/create")
-    public ResponseEntity<DebateRoomResponse> createRoom(@RequestBody @Valid DebateRoomRequest room, Principal principal) {
+    public ResponseEntity<DebateRoomResponse> createRoom(@RequestBody @Valid DebateRoomRequest room, Principal principal) throws CannotJoinException {
         User user = userService.loadUserByUsername(principal.getName());
         DebateRoom newRoom = debateService.createRoom(DebateRoomRequest.newRoom(room, user));
-        DebateRoom saveRoom = debateService.join(newRoom, user, room.isOpinion());
+        DebateRoom saveRoom = debateService.join(newRoom.getDebateRoomId(), user, room.isOpinion());
         return new ResponseEntity<>(DebateRoomResponse.roomResponse(saveRoom), HttpStatus.CREATED);
+    }
+
+    //참여 가능 여부
+    @GetMapping("/canjoin/{roomId}")
+    public ResponseEntity<Object> canJoin(@PathVariable Long roomId) {
+        return new ResponseEntity<>(debateService.canJoin(roomId), HttpStatus.OK);
+    }
+
+    //토론 참여
+    @GetMapping("/join/{roomId}")
+    public ResponseEntity<DebateRoomResponse> join(@PathVariable Long roomId, @RequestParam Boolean opinion, Principal principal) throws CannotJoinException {
+        User user = userService.loadUserByUsername(principal.getName());
+        DebateRoom room = debateService.join(roomId, user, opinion);
+        return new ResponseEntity<>(DebateRoomResponse.roomResponse(room), HttpStatus.OK);
+    }
+
+    //토론 나가기
+    @GetMapping("/exit/{roomId}")
+    public ResponseEntity<Object> exit(@PathVariable Long roomId, Principal principal) {
+        User user = userService.loadUserByUsername(principal.getName());
+        debateService.exit(debateService.findRoom(roomId), user);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("result", "나가기 완료");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
 }
