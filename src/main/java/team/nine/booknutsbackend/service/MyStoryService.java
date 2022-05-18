@@ -8,7 +8,6 @@ import team.nine.booknutsbackend.domain.Board;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.domain.myStory.MyStory;
 import team.nine.booknutsbackend.domain.myStory.MyStoryBoard;
-import team.nine.booknutsbackend.dto.BoardDto;
 import team.nine.booknutsbackend.dto.MyStoryDto;
 import team.nine.booknutsbackend.exception.mystory.MyStoryNotFoundException;
 import team.nine.booknutsbackend.repository.MyStoryBoardRepository;

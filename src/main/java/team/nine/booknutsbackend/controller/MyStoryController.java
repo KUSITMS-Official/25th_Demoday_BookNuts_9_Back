@@ -8,8 +8,8 @@ import team.nine.booknutsbackend.domain.Board;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.domain.myStory.MyStory;
 import team.nine.booknutsbackend.domain.myStory.MyStoryBoard;
-import team.nine.booknutsbackend.dto.BoardDto;
 import team.nine.booknutsbackend.dto.MyStoryDto;
+import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.exception.mystory.MyStoryNotFoundException;
 import team.nine.booknutsbackend.repository.MyStoryRepository;
 import team.nine.booknutsbackend.service.BoardService;
@@ -53,15 +53,15 @@ public class MyStoryController {
 
     //특정 스토리 조회
     @GetMapping("/{mystoryId}")
-    public List<BoardDto> findmystory(@PathVariable Long mystoryId, Principal principal) {
+    public List<BoardResponse> findmystory(@PathVariable Long mystoryId, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
         List<MyStoryBoard> myStoryBoards=myStoryService.find(mystoryId);
-        List<BoardDto> mystoryboardlist = new ArrayList<>();
+        List<BoardResponse> mystoryboardlist = new ArrayList<>();
 
         for(MyStoryBoard myStoryBoard:myStoryBoards){
             Long boardId=myStoryBoard.getBoard().getBoardId();
             Board board=boardService.find(boardId);
-            mystoryboardlist.add(BoardDto.boardResponse(board, user));
+            mystoryboardlist.add(BoardResponse.boardResponse(board, user));
         }
 
         return mystoryboardlist;
