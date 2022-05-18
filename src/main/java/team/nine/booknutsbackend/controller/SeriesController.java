@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.domain.myStory.Series;
 import team.nine.booknutsbackend.domain.myStory.SeriesBoard;
+import team.nine.booknutsbackend.dto.Request.SeriesRequest;
 import team.nine.booknutsbackend.dto.Response.SeriesResponse;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.service.BoardService;
@@ -28,22 +29,17 @@ public class SeriesController {
     @GetMapping("/list")
     public List<SeriesResponse> allMySeries (Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        System.out.println(user.getLoginId());
         return seriesService.allMySeries(user);
     }
 
     //시리즈 그룹핑
-//    @PostMapping("/groupseries")
-//    public String grouping(@RequestBody Map<String, String> postlist, Principal principal) {
-//        User user = userService.loadUserByUsername(principal.getName());
-//        Series series = new Series();
-//        //myStory.
-//        //String boardIdlist=board.get("boardlist");
-//        //long[] boardlist= Arrays.stream(boardIdlist.split(",")).mapToLong(Long::parseLong).toArray();
-//
-//        //myStoryService.grouping(boardlist);
-//        return "redirect/mystory/all";
-//    }
+    @PostMapping("/groupingseries")
+    public String grouping(@RequestBody SeriesRequest series, Principal principal) {
+        User user = userService.loadUserByUsername(principal.getName());
+        seriesService.saveSeries(series,user);
+        //리턴 값을 뭘로? redirect:/list?? or redirect:/1 ??
+        return null;
+    }
 
     //특정 시리즈 조회
 //    @GetMapping("/{mystoryId}")

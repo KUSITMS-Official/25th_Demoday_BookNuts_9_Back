@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.domain.myStory.Series;
 import team.nine.booknutsbackend.domain.myStory.SeriesBoard;
+import team.nine.booknutsbackend.dto.Request.SeriesRequest;
 import team.nine.booknutsbackend.dto.Response.SeriesResponse;
 import team.nine.booknutsbackend.exception.mystory.SeriesNotFoundException;
 import team.nine.booknutsbackend.repository.SeriesBoardRepository;
@@ -20,6 +21,7 @@ public class SeriesService {
 
     private final SeriesRepository seriesRepository;
     private final SeriesBoardRepository seriesBoardRepository;
+    private final BoardService boardService;
 
     //내 시리즈 조회
     @Transactional(readOnly = true)
@@ -27,7 +29,6 @@ public class SeriesService {
         List<Series> stories = seriesRepository.findAllByUser(user);
         List<SeriesResponse> seriesResponseList =new ArrayList<>();
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         for(Series series : stories){
             seriesResponseList.add(SeriesResponse.myStoryResponse(series,user));
         }
@@ -35,17 +36,21 @@ public class SeriesService {
     }
 
     //스토리 그룹핑
-//    @Transactional(readOnly = true)
-//    public void grouping(long[] boardlist) {
-//        Series series;
-//        SeriesBoard seriesBoard;
-//
-//        for(Long boardId: boardlist){
-//
-//        }
-//
-//        return;
-//    }
+    public void saveSeries(SeriesRequest seriesRequest, User user) {
+        List<Long> boardIdlist=seriesRequest.getBoardIdlist();
+
+        Series series=seriesRepository.save(Series.builder()
+                            .title(seriesRequest.getTitle())
+                            .content(seriesRequest.getContent())
+                            .imgUrl(seriesRequest.getImgUrl())
+                            .user(user).build());
+
+        for(Long boardid : boardIdlist){
+            seriesBoardRepository.save(SeriesBoard.builder()
+                    .series(series)
+                    .board(boardService.findBoard(boardid)).build());
+        }
+    }
 
     //특정 스토리 조회
 //    @Transactional(readOnly = true)
