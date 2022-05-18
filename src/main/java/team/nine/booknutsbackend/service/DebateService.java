@@ -10,6 +10,7 @@ import team.nine.booknutsbackend.dto.Response.DebateRoomResponse;
 import team.nine.booknutsbackend.exception.Debate.CannotJoinException;
 import team.nine.booknutsbackend.exception.Debate.RoomNotFoundException;
 import team.nine.booknutsbackend.exception.Debate.StatusChangeException;
+import team.nine.booknutsbackend.exception.Debate.UserNotFoundException;
 import team.nine.booknutsbackend.repository.DebateRoomRepository;
 import team.nine.booknutsbackend.repository.DebateUserRepository;
 
@@ -64,7 +65,8 @@ public class DebateService {
     //토론 나가기
     @Transactional
     public void exit(DebateRoom room, User user) {
-        DebateUser debateUser = debateUserRepository.findByUser(user);
+        DebateUser debateUser = debateUserRepository.findByDebateRoomAndUser(room, user)
+                .orElseThrow(() -> new UserNotFoundException("토론에 참여한 유저가 아닙니다."));
         debateUserRepository.delete(debateUser);
         updateCount(room);
     }
