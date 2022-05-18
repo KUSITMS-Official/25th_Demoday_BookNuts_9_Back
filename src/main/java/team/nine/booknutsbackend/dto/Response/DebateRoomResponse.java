@@ -15,6 +15,7 @@ public class DebateRoomResponse {
     String topic;
     String coverImgUrl;
     int type;
+    int maxUser;
     int curYesUser;
     int curNoUser;
     int status;
@@ -29,6 +30,7 @@ public class DebateRoomResponse {
                 .topic(room.getTopic())
                 .coverImgUrl(room.getCoverImgUrl())
                 .type(room.getType())
+                .maxUser(room.getMaxUser())
                 .curYesUser(room.getCurYesUser())
                 .curNoUser(room.getCurNoUser())
                 .status(room.getStatus())
