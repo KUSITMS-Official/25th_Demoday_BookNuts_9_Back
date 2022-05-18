@@ -17,6 +17,7 @@ public class BoardResponse {
     String writer;
     String createdDate;
     String bookTitle;
+    String bookAuthor;
     String bookImgUrl;
     String bookGenre;
     Boolean curUser;
@@ -29,6 +30,7 @@ public class BoardResponse {
                 .writer(board.getUser().getNickname())
                 .createdDate(board.getCreatedDate())
                 .bookTitle(board.getBookTitle())
+                .bookAuthor(board.getBookAuthor())
                 .bookImgUrl(board.getBookImgUrl())
                 .bookGenre(board.getBookGenre())
                 .curUser(Objects.equals(board.getUser().getUserId(), user.getUserId()))

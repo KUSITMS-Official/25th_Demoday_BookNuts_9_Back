@@ -1,49 +1,37 @@
 package team.nine.booknutsbackend.dto.Request;
 
 import lombok.Getter;
-import team.nine.booknutsbackend.domain.Discussion;
+import team.nine.booknutsbackend.domain.Debate.DebateRoom;
 import team.nine.booknutsbackend.domain.User;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
-public class RoomRequest {
+public class DebateRoomRequest {
 
     @NotBlank String bookTitle;
+    @NotBlank String bookAuthor;
     @NotBlank String bookImgUrl;
     @NotBlank String bookGenre;
     @NotBlank String topic;
     @NotBlank String coverImgUrl;
     @NotNull int type;
     @NotNull int maxUser;
-    @NotNull int yesno;
-    int status;
-    int curYesUser;
-    int curNoUser;
+    @NotNull boolean opinion;
+    User owner;
 
-    public static Discussion newRoom(RoomRequest roomRequest, User user) {
-        Discussion room = new Discussion();
+    public static DebateRoom newRoom(DebateRoomRequest roomRequest, User user) {
+        DebateRoom room = new DebateRoom();
         room.setBookTitle(roomRequest.getBookTitle());
+        room.setBookAuthor(roomRequest.getBookAuthor());
         room.setBookImgUrl(roomRequest.getBookImgUrl());
         room.setBookGenre(roomRequest.getBookGenre());
         room.setTopic(roomRequest.getTopic());
         room.setCoverImgUrl(roomRequest.getCoverImgUrl());
         room.setType(roomRequest.getType());
         room.setMaxUser(roomRequest.getMaxUser());
-        room.setUser(user);
-
-        //개설자가 '반대'일 경우
-        if (roomRequest.getYesno() == 0) {
-            room.setCurYesUser(0);
-            room.setCurNoUser(1);
-        }
-
-        //개설자가 '찬성'일 경우
-        else {
-            room.setCurYesUser(1);
-            room.setCurNoUser(0);
-        }
+        room.setOwner(user);
 
         return room;
     }
