@@ -3,19 +3,14 @@ package team.nine.booknutsbackend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.User;
-import team.nine.booknutsbackend.domain.myStory.Series;
-import team.nine.booknutsbackend.domain.myStory.SeriesBoard;
 import team.nine.booknutsbackend.dto.Request.SeriesRequest;
-import team.nine.booknutsbackend.dto.Response.SeriesResponse;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
-import team.nine.booknutsbackend.service.BoardService;
+import team.nine.booknutsbackend.dto.Response.SeriesResponse;
 import team.nine.booknutsbackend.service.SeriesService;
 import team.nine.booknutsbackend.service.UserService;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,7 +22,7 @@ public class SeriesController {
 
     //내 시리즈 조회
     @GetMapping("/list")
-    public List<SeriesResponse> allMySeries (Principal principal) {
+    public List<SeriesResponse> allMySeries(Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
         return seriesService.allMySeries(user);
     }
@@ -36,7 +31,7 @@ public class SeriesController {
     @PostMapping("/groupingseries")
     public String grouping(@RequestBody SeriesRequest series, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        seriesService.saveSeries(series,user);
+        seriesService.saveSeries(series, user);
         //리턴 값을 뭘로? redirect:/list?? or redirect:/1 ??
         return null;
     }
@@ -56,5 +51,12 @@ public class SeriesController {
 //
 //        return mystoryboardlist;
 //    }
+
+    //특정 시리즈 조회
+    @GetMapping("/{seriesId}")
+    public List<BoardResponse> findmySeries(@PathVariable Long seriesId, Principal principal) {
+        User user = userService.loadUserByUsername(principal.getName());
+        return seriesService.findSeries(seriesId, user);
+    }
 
 }

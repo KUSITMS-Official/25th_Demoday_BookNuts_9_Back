@@ -1,4 +1,4 @@
-package team.nine.booknutsbackend.exception.mystory;
+package team.nine.booknutsbackend.exception.series;
 
 public class SeriesNotFoundException extends IllegalArgumentException {
     public SeriesNotFoundException(String msg) {
