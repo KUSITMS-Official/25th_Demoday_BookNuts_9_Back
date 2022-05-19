@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.ArchiveRequest;
-import team.nine.booknutsbackend.dto.Request.SeriesRequest;
 import team.nine.booknutsbackend.dto.Response.ArchiveResponse;
+import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.service.ArchiveService;
 import team.nine.booknutsbackend.service.UserService;
 
@@ -31,14 +31,32 @@ public class ArchiveController {
         return archiveService.allarchive(user);
     }
 
-    //아카이브 추가
-    @PostMapping("/addarchive")
-    public ResponseEntity<Object> addArchive(@RequestBody ArchiveRequest archiveRequest, Principal principal) {
+    //아카이브 생성
+    @PostMapping("/createarchive")
+    public ResponseEntity<Object> createArchive(@RequestBody ArchiveRequest archiveRequest, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
         archiveService.saveArchive(archiveRequest, user);
 
         Map<String, String> map = new HashMap<>();
-        map.put("result", "추가 완료");
+        map.put("result", "아카이브 생성 완료");
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    //특정 아카이브 조회
+    @GetMapping("/{archiveId}")
+    public List<BoardResponse> findArchive(@PathVariable Long archiveId, Principal principal) {
+        User user = userService.loadUserByUsername(principal.getName());
+        return archiveService.findArchive(archiveId, user);
+    }
+
+    //아카이브에 추가
+    @GetMapping("/addarchive/{archiveId}/{boardId}")
+    public ResponseEntity<Object> addToArchive(@PathVariable Long archiveId, @PathVariable Long boardId, Principal principal) {
+        User user = userService.loadUserByUsername(principal.getName());
+        archiveService.addToArchive(archiveId, boardId, user);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("result", "아카이브에 추가 완료");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

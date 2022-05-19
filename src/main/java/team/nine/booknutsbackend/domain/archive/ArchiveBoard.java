@@ -3,7 +3,6 @@ package team.nine.booknutsbackend.domain.archive;
 import lombok.Getter;
 import lombok.Setter;
 import team.nine.booknutsbackend.domain.Board;
-import team.nine.booknutsbackend.domain.User;
 
 import javax.persistence.*;
 
