@@ -1,6 +1,5 @@
-package team.nine.booknutsbackend.domain.myStory;
+package team.nine.booknutsbackend.domain.Series;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import team.nine.booknutsbackend.domain.User;
@@ -12,7 +11,6 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @Setter
-@Builder
 public class Series {
 
     @Id
