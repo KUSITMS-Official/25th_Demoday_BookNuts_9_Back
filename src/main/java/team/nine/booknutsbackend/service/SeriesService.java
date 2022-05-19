@@ -41,28 +41,15 @@ public class SeriesService {
         List<Long> boardIdlist = seriesRequest.getBoardIdlist();
         Series series = SeriesRequest.newSeries(seriesRequest, user);
         seriesRepository.save(series);
-//        Series series=seriesRepository.save(Series.builder()
-//                            .title(seriesRequest.getTitle())
-//                            .content(seriesRequest.getContent())
-//                            .imgUrl(seriesRequest.getImgUrl())
-//                            .user(user).build());
 
         for (Long boardId : boardIdlist) {
             SeriesBoard seriesBoard = new SeriesBoard();
             seriesBoard.setSeries(series);
             seriesBoard.setBoard(boardService.findBoard(boardId));
             seriesBoardRepository.save(seriesBoard);
-//            seriesBoardRepository.save(SeriesBoard.builder()
-//                    .series(series)
-//                    .board(boardService.findBoard(boardId)).build());
         }
     }
 
-    //특정 스토리 조회
-//    @Transactional(readOnly = true)
-//    public List<SeriesBoard> find(Long mystoryId) throws SeriesNotFoundException {
-//        return seriesBoardRepository.findAllByMyStoryId(mystoryId);
-//    }
 
     //특정 시리즈 조회
     @Transactional(readOnly = true)
@@ -76,14 +63,5 @@ public class SeriesService {
             boardList.add(BoardResponse.boardResponse(seriesBoard.getBoard(), user));
         }
         return boardList;
-        //List<Board> boards = boardRepository.findAll();
-        //        List<BoardResponse> boardDtoList = new ArrayList<>();
-        //
-        //        for (Board board : boards) {
-        //            boardDtoList.add(BoardResponse.boardResponse(board, user));
-        //        }
-        //
-        //        Collections.reverse(boardDtoList); //최신순
-        //        return boardDtoList;
     }
 }
