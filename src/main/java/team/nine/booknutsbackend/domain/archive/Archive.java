@@ -18,6 +18,9 @@ public class Archive {
     @Column(length = 100, nullable = false)
     private String title;
 
+    @Column(length = 100, nullable = false)
+    private String content;
+
     @ManyToOne
     @JoinColumn(name ="user")
     private User user;

@@ -36,7 +36,7 @@ public class SeriesService {
         return seriesResponseList;
     }
 
-    //스토리 그룹핑
+    //새로운 시리즈 발행
     public void saveSeries(SeriesRequest seriesRequest, User user) {
         List<Long> boardIdlist = seriesRequest.getBoardIdlist();
         Series series = SeriesRequest.newSeries(seriesRequest, user);
@@ -49,7 +49,6 @@ public class SeriesService {
             seriesBoardRepository.save(seriesBoard);
         }
     }
-
 
     //특정 시리즈 조회
     @Transactional(readOnly = true)

@@ -17,10 +17,6 @@ public class ArchiveBoard {
     private Long archiveBoardId;
 
     @ManyToOne
-    @JoinColumn(name ="user")
-    private User user;
-
-    @ManyToOne
     @JoinColumn(name ="archive")
     private Archive archive;
 
