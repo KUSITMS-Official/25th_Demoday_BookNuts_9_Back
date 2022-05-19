@@ -1,6 +1,8 @@
 package team.nine.booknutsbackend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.SeriesRequest;
@@ -10,7 +12,9 @@ import team.nine.booknutsbackend.service.SeriesService;
 import team.nine.booknutsbackend.service.UserService;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,28 +33,14 @@ public class SeriesController {
 
     //시리즈 그룹핑
     @PostMapping("/groupingseries")
-    public String grouping(@RequestBody SeriesRequest series, Principal principal) {
+    public ResponseEntity<Object> grouping(@RequestBody SeriesRequest series, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
         seriesService.saveSeries(series, user);
-        //리턴 값을 뭘로? redirect:/list?? or redirect:/1 ??
-        return null;
-    }
 
-    //특정 시리즈 조회
-//    @GetMapping("/{mystoryId}")
-//    public List<BoardResponse> findmystory(@PathVariable Long mystoryId, Principal principal) {
-//        User user = userService.loadUserByUsername(principal.getName());
-//        List<SeriesBoard> seriesBoards = seriesService.find(mystoryId);
-//        List<BoardResponse> mystoryboardlist = new ArrayList<>();
-//
-//        for(SeriesBoard seriesBoard : seriesBoards){
-//            Long boardId= seriesBoard.getBoard().getBoardId();
-//            //Board board=boardService.find(boardId);
-//            //mystoryboardlist.add(BoardResponse.boardResponse(board, user));
-//        }
-//
-//        return mystoryboardlist;
-//    }
+        Map<String, String> map = new HashMap<>();
+        map.put("result", "그룹핑 완료");
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 
     //특정 시리즈 조회
     @GetMapping("/{seriesId}")
