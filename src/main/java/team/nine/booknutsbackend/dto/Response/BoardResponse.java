@@ -20,6 +20,12 @@ public class BoardResponse {
     String bookAuthor;
     String bookImgUrl;
     String bookGenre;
+    int nutsCnt;
+    int heartCnt;
+    int archiveCnt;
+    //Boolean isNuts;
+    //Boolean isHeart;
+    //Boolean isArchived;
     Boolean curUser;
 
     public static BoardResponse boardResponse(Board board, User user) {
@@ -33,6 +39,12 @@ public class BoardResponse {
                 .bookAuthor(board.getBookAuthor())
                 .bookImgUrl(board.getBookImgUrl())
                 .bookGenre(board.getBookGenre())
+                .nutsCnt(board.getNutsCnt())
+                .heartCnt(board.getHeartCnt())
+                .archiveCnt(board.getArchiveCnt())
+                //.isNuts()
+                //.isHeart()
+                //.isArchived()
                 .curUser(Objects.equals(board.getUser().getUserId(), user.getUserId()))
                 .build();
     }

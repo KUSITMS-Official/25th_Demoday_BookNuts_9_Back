@@ -8,6 +8,7 @@ import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.exception.board.BoardNotFoundException;
 import team.nine.booknutsbackend.exception.board.NoAccessException;
+import team.nine.booknutsbackend.repository.ArchiveBoardRepository;
 import team.nine.booknutsbackend.repository.BoardRepository;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final ArchiveBoardRepository archiveBoardRepository;
 
     //게시글 작성
     @Transactional
@@ -64,6 +66,15 @@ public class BoardService {
                 .orElseThrow(() -> new NoAccessException("해당 유저는 삭제 권한이 없습니다."));
 
         boardRepository.delete(board);
+    }
+
+    //게시글 카운트 데이터 업데이트 (공감, 넛츠, 아카이브)
+    @Transactional
+    public void updateCount(Board board) {
+        //board.setNutsCnt();
+        //board.setHeartCnt();
+        board.setArchiveCnt(archiveBoardRepository.countByBoard(board));
+        boardRepository.save(board);
     }
 
 }
