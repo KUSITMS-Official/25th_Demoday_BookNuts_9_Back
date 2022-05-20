@@ -41,9 +41,8 @@ public class ArchiveService {
     }
 
     //아카이브 생성
-    public void saveArchive(ArchiveRequest archiveRequest, User user) {
-        Archive archive = ArchiveRequest.newArchive(archiveRequest, user);
-        archiveRepository.save(archive);
+    public Archive saveArchive(Archive archive) {
+        return archiveRepository.save(archive);
     }
 
     //특정 아카이브 조회

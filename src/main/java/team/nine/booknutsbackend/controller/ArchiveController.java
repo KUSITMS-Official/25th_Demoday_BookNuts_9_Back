@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.User;
+import team.nine.booknutsbackend.domain.archive.Archive;
 import team.nine.booknutsbackend.dto.Request.ArchiveRequest;
 import team.nine.booknutsbackend.dto.Response.ArchiveResponse;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
@@ -33,13 +34,11 @@ public class ArchiveController {
 
     //아카이브 생성
     @PostMapping("/createarchive")
-    public ResponseEntity<Object> createArchive(@RequestBody ArchiveRequest archiveRequest, Principal principal) {
+    public ResponseEntity<ArchiveResponse> createArchive(@RequestBody ArchiveRequest archiveRequest, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        archiveService.saveArchive(archiveRequest, user);
+        Archive archive=archiveService.saveArchive(ArchiveRequest.newArchive(archiveRequest, user));
 
-        Map<String, String> map = new HashMap<>();
-        map.put("result", "아카이브 생성 완료");
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(ArchiveResponse.archiveResponse(archive), HttpStatus.CREATED);
     }
 
     //특정 아카이브 조회
