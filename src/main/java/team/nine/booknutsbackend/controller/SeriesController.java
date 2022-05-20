@@ -8,6 +8,7 @@ import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.SeriesRequest;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.dto.Response.SeriesResponse;
+import team.nine.booknutsbackend.exception.board.NoAccessException;
 import team.nine.booknutsbackend.service.SeriesService;
 import team.nine.booknutsbackend.service.UserService;
 
@@ -47,6 +48,17 @@ public class SeriesController {
     public List<BoardResponse> findmySeries(@PathVariable Long seriesId, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
         return seriesService.findSeries(seriesId, user);
+    }
+
+    //시리즈 삭제
+    @DeleteMapping("/{seriesId}")
+    public ResponseEntity<Object> delete(@PathVariable Long seriesId, Principal principal) throws NoAccessException {
+        User user = userService.loadUserByUsername(principal.getName());
+        seriesService.delete(seriesId, user);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("result", "시리즈 삭제 완료");
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
 }
