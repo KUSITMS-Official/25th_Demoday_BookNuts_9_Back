@@ -71,5 +71,7 @@ public class ArchiveService {
         archiveBoard.setArchive(archive);
         archiveBoard.setBoard(board);
         archiveBoardRepository.save(archiveBoard);
+
+        boardService.updateCount(board); //게시글 카운트 데이터 업데이트
     }
 }

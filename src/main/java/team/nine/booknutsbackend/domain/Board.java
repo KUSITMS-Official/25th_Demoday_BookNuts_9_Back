@@ -40,6 +40,15 @@ public class Board {
     private String bookGenre;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="writer")
+    @JoinColumn(name = "writer")
     private User user;
+
+    @Column(nullable = false)
+    private int nutsCnt = 0;
+
+    @Column(nullable = false)
+    private int heartCnt = 0;
+
+    @Column(nullable = false)
+    private int archiveCnt = 0;
 }
