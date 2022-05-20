@@ -2,6 +2,7 @@ package team.nine.booknutsbackend.dto.Response;
 
 import lombok.Builder;
 import lombok.Getter;
+import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.domain.archive.Archive;
 
 @Getter
