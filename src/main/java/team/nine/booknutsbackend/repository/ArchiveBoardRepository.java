@@ -12,4 +12,5 @@ public interface ArchiveBoardRepository extends JpaRepository<ArchiveBoard, User
     List<ArchiveBoard> findByArchive(Archive archive);
     int countByBoard(Board board);
     List<ArchiveBoard> findByBoard(Board board);
+    ArchiveBoard findByArchiveAndBoard(Archive archive, Board board);
 }
