@@ -81,4 +81,19 @@ public class ArchiveController {
         map.put("result", "아카이브 안 게시글 삭제 완료");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    //아카이브 수정
+    @PutMapping("/{archiveId}")
+    public ResponseEntity<ArchiveResponse> update(@PathVariable Long archiveId, @RequestBody ArchiveRequest archiveRequest, Principal principal) throws NoAccessException{
+        Archive archive = archiveService.findByArchiveId(archiveId);
+        User user = userService.loadUserByUsername(principal.getName());
+
+        if (archiveRequest.getTitle() != null) archive.setTitle(archiveRequest.getTitle());
+        if (archiveRequest.getContent() != null) archive.setContent(archiveRequest.getContent());
+        if (archiveRequest.getImgUrl() != null) archive.setImgUrl(archiveRequest.getImgUrl());
+
+        Archive updateArchive = archiveService.update(archive, user);
+        return new ResponseEntity<>(ArchiveResponse.archiveResponse(updateArchive), HttpStatus.OK);
+
+    }
 }

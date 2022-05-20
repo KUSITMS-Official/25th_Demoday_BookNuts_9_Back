@@ -96,6 +96,21 @@ public class ArchiveService {
 
         ArchiveBoard archiveBoard = archiveBoardRepository.findByArchiveAndBoard(archive,board);
         archiveBoardRepository.delete(archiveBoard);
+    }
 
+    //아카이브 조회(아카이브명, 내용, 이미지)
+    @Transactional(readOnly = true)
+    public Archive findByArchiveId(Long archiveId) throws ArchiveNotFoundException {
+        return archiveRepository.findById(archiveId)
+                .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 아카이브 아이디입니다."));
+    }
+
+    //아카이브 수정
+    @Transactional
+    public Archive update(Archive archive, User user) throws NoAccessException {
+        archiveRepository.findByArchiveIdAndUser(archive.getArchiveId(), user)
+                .orElseThrow(() -> new NoAccessException("해당 유저는 수정 권한이 없습니다."));
+
+        return archiveRepository.save(archive);
     }
 }
