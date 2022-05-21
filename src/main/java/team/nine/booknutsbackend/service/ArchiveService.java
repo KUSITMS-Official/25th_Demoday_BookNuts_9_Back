@@ -83,6 +83,7 @@ public class ArchiveService {
 
         for (ArchiveBoard archiveBoard : archiveBoards) {
             archiveBoardRepository.delete(archiveBoard);
+            boardService.updateCount(archiveBoard.getBoard());
         }
         archiveRepository.delete(archive);
     }
@@ -94,8 +95,10 @@ public class ArchiveService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글 번호입니다."));
 
-        ArchiveBoard archiveBoard = archiveBoardRepository.findByArchiveAndBoard(archive,board);
+        ArchiveBoard archiveBoard = archiveBoardRepository.findByArchiveAndBoard(archive, board);
         archiveBoardRepository.delete(archiveBoard);
+
+        boardService.updateCount(board); //게시글 카운트 데이터 업데이트
     }
 
     //아카이브 조회(아카이브명, 내용, 이미지)
