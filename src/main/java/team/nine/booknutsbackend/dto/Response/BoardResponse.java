@@ -25,8 +25,8 @@ public class BoardResponse {
     int nutsCnt;
     int heartCnt;
     int archiveCnt;
-    //Boolean isNuts;
-    //Boolean isHeart;
+    Boolean isNuts;
+    Boolean isHeart;
     Boolean isArchived;
     Boolean curUser;
 
@@ -44,8 +44,8 @@ public class BoardResponse {
                 .nutsCnt(board.getNutsCnt())
                 .heartCnt(board.getHeartCnt())
                 .archiveCnt(board.getArchiveCnt())
-                //.isNuts()
-                //.isHeart()
+                .isNuts(false)
+                .isHeart(false)
                 .isArchived(getIsArchived(board, user))
                 .curUser(Objects.equals(board.getUser().getUserId(), user.getUserId()))
                 .build();
