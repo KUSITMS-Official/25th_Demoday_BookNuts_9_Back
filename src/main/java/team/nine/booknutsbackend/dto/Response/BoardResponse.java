@@ -4,7 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import team.nine.booknutsbackend.domain.Board;
 import team.nine.booknutsbackend.domain.User;
+import team.nine.booknutsbackend.domain.archive.ArchiveBoard;
 
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -23,9 +25,9 @@ public class BoardResponse {
     int nutsCnt;
     int heartCnt;
     int archiveCnt;
-    //Boolean isNuts;
-    //Boolean isHeart;
-    //Boolean isArchived;
+    Boolean isNuts;
+    Boolean isHeart;
+    Boolean isArchived;
     Boolean curUser;
 
     public static BoardResponse boardResponse(Board board, User user) {
@@ -42,10 +44,23 @@ public class BoardResponse {
                 .nutsCnt(board.getNutsCnt())
                 .heartCnt(board.getHeartCnt())
                 .archiveCnt(board.getArchiveCnt())
-                //.isNuts()
-                //.isHeart()
-                //.isArchived()
+                .isNuts(false)
+                .isHeart(false)
+                .isArchived(getIsArchived(board, user))
                 .curUser(Objects.equals(board.getUser().getUserId(), user.getUserId()))
                 .build();
+    }
+
+    private static Boolean getIsArchived(Board board, User user) {
+        List<ArchiveBoard> archiveBoards = user.getArchiveBoards();
+        boolean result = false;
+        for (ArchiveBoard archiveBoard : archiveBoards) {
+            if (Objects.equals(archiveBoard.getBoard().getBoardId(), board.getBoardId())) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
     }
 }
