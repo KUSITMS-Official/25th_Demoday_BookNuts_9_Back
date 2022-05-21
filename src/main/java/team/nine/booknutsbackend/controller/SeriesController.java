@@ -32,7 +32,7 @@ public class SeriesController {
         return seriesService.allMySeries(user);
     }
 
-    //시리즈 그룹핑
+    //시리즈 발행
     @PostMapping("/groupingseries")
     public ResponseEntity<Object> grouping(@RequestBody SeriesRequest series, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
@@ -45,7 +45,7 @@ public class SeriesController {
 
     //특정 시리즈 조회
     @GetMapping("/{seriesId}")
-    public List<BoardResponse> findmySeries(@PathVariable Long seriesId, Principal principal) {
+    public List<BoardResponse> findMySeries(@PathVariable Long seriesId, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
         return seriesService.findSeries(seriesId, user);
     }
@@ -58,6 +58,17 @@ public class SeriesController {
 
         Map<String, String> map = new HashMap<>();
         map.put("result", "시리즈 삭제 완료");
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    //시리즈에 게시글 추가
+    @GetMapping("/addseries/{seriesId}/{boardId}")
+    public ResponseEntity<Object> addToSeries(@PathVariable Long seriesId, @PathVariable Long boardId, Principal principal) {
+        User user = userService.loadUserByUsername(principal.getName());
+        seriesService.addToSeries(seriesId, boardId);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("result", "시리즈에 추가 완료");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
