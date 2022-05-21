@@ -19,7 +19,7 @@ public class SeriesRequest {
         series.setTitle(seriesRequest.getTitle());
         series.setContent(seriesRequest.getContent());
         series.setImgUrl(seriesRequest.getImgUrl());
-        series.setUser(user);
+        series.setOwner(user);
 
         return series;
     }

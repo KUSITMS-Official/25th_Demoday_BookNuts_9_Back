@@ -6,8 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import team.nine.booknutsbackend.domain.Series.Series;
 import team.nine.booknutsbackend.domain.Series.SeriesBoard;
 import team.nine.booknutsbackend.domain.User;
-import team.nine.booknutsbackend.domain.archive.Archive;
-import team.nine.booknutsbackend.domain.archive.ArchiveBoard;
 import team.nine.booknutsbackend.dto.Request.SeriesRequest;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.dto.Response.SeriesResponse;
@@ -30,7 +28,7 @@ public class SeriesService {
     //내 시리즈 조회
     @Transactional(readOnly = true)
     public List<SeriesResponse> allMySeries(User user) {
-        List<Series> stories = seriesRepository.findAllByUser(user);
+        List<Series> stories = seriesRepository.findAllByOwner(user);
         List<SeriesResponse> seriesResponseList = new ArrayList<>();
 
         for (Series series : stories) {
@@ -70,13 +68,11 @@ public class SeriesService {
     //시리즈 삭제
     @Transactional
     public void delete(Long seriesId, User user) throws NoAccessException {
-        Series series = seriesRepository.findBySeriesIdAndUser(seriesId, user)
+        Series series = seriesRepository.findBySeriesIdAndOwner(seriesId, user)
                 .orElseThrow(() -> new NoAccessException("해당 유저는 삭제 권한이 없습니다."));
         List<SeriesBoard> seriesBoards = seriesBoardRepository.findBySeries(series);
 
-        for (SeriesBoard SeriesBoard : seriesBoards) {
-            seriesBoardRepository.delete(SeriesBoard);
-        }
+        seriesBoardRepository.deleteAll(seriesBoards);
         seriesRepository.delete(series);
     }
 }

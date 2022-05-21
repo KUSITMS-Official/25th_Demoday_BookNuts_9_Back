@@ -24,4 +24,5 @@ public class SeriesBoard {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name ="board")
     private Board board;
+
 }

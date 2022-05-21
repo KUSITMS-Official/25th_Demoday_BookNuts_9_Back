@@ -22,8 +22,8 @@ public class Archive {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name ="user")
-    private User user;
+    @JoinColumn(name ="owner")
+    private User owner;
 
     @Column(length = 300, nullable = false)
     private String imgUrl;

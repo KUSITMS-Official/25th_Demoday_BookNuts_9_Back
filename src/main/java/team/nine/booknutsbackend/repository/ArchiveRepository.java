@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArchiveRepository extends JpaRepository<Archive, Long> {
-    List<Archive> findAllByUser(User user);
+    List<Archive> findAllByOwner(User user);
 
-    Optional<Archive> findByArchiveIdAndUser(Long archiveId, User user);
+    Optional<Archive> findByArchiveIdAndOwner(Long archiveId, User user);
 
 }

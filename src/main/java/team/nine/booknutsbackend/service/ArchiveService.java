@@ -31,7 +31,7 @@ public class ArchiveService {
     //아카이브 리스트 조회
     @Transactional(readOnly = true)
     public List<ArchiveResponse> allarchive(User user) {
-        List<Archive> archives = archiveRepository.findAllByUser(user);
+        List<Archive> archives = archiveRepository.findAllByOwner(user);
         List<ArchiveResponse> archiveResponseList = new ArrayList<>();
 
         for (Archive archive : archives) {
@@ -60,7 +60,7 @@ public class ArchiveService {
     }
 
     //아카이브에 추가
-    public void addToArchive(Long archiveId, Long boardId, User user) {
+    public void addToArchive(Long archiveId, Long boardId) {
         Archive archive = archiveRepository.findById(archiveId)
                 .orElseThrow(() -> new ArchiveNotFoundException("존재하지 않는 아카이브 아이디입니다."));
         Board board = boardRepository.findById(boardId)
@@ -69,6 +69,7 @@ public class ArchiveService {
         ArchiveBoard archiveBoard = new ArchiveBoard();
         archiveBoard.setArchive(archive);
         archiveBoard.setBoard(board);
+        archiveBoard.setOwner(archive.getOwner());
         archiveBoardRepository.save(archiveBoard);
 
         boardService.updateCount(board); //게시글 카운트 데이터 업데이트
@@ -77,7 +78,7 @@ public class ArchiveService {
     //아카이브 삭제
     @Transactional
     public void delete(Long archiveId, User user) throws NoAccessException {
-        Archive archive = archiveRepository.findByArchiveIdAndUser(archiveId, user)
+        Archive archive = archiveRepository.findByArchiveIdAndOwner(archiveId, user)
                 .orElseThrow(() -> new NoAccessException("해당 유저는 삭제 권한이 없습니다."));
         List<ArchiveBoard> archiveBoards = archiveBoardRepository.findByArchive(archive);
 
@@ -111,7 +112,7 @@ public class ArchiveService {
     //아카이브 수정
     @Transactional
     public Archive update(Archive archive, User user) throws NoAccessException {
-        archiveRepository.findByArchiveIdAndUser(archive.getArchiveId(), user)
+        archiveRepository.findByArchiveIdAndOwner(archive.getArchiveId(), user)
                 .orElseThrow(() -> new NoAccessException("해당 유저는 수정 권한이 없습니다."));
 
         return archiveRepository.save(archive);

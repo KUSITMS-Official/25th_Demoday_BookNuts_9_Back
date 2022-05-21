@@ -13,14 +13,13 @@ public class ArchiveRequest {
     @NotBlank String title;
     @NotBlank String content;
     String imgUrl;
-    @NotBlank Long boardId;
 
     public static Archive newArchive(ArchiveRequest archiveRequest, User user){
         Archive archive = new Archive();
         archive.setTitle(archiveRequest.getTitle());
         archive.setContent(archiveRequest.getContent());
         archive.setImgUrl(archiveRequest.getImgUrl());
-        archive.setUser(user);
+        archive.setOwner(user);
 
         return archive;
     }
