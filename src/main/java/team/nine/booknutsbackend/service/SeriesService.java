@@ -3,14 +3,17 @@ package team.nine.booknutsbackend.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.nine.booknutsbackend.domain.Board;
 import team.nine.booknutsbackend.domain.Series.Series;
 import team.nine.booknutsbackend.domain.Series.SeriesBoard;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.SeriesRequest;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.dto.Response.SeriesResponse;
+import team.nine.booknutsbackend.exception.board.BoardNotFoundException;
 import team.nine.booknutsbackend.exception.board.NoAccessException;
 import team.nine.booknutsbackend.exception.series.SeriesNotFoundException;
+import team.nine.booknutsbackend.repository.BoardRepository;
 import team.nine.booknutsbackend.repository.SeriesBoardRepository;
 import team.nine.booknutsbackend.repository.SeriesRepository;
 
@@ -23,6 +26,7 @@ public class SeriesService {
 
     private final SeriesRepository seriesRepository;
     private final SeriesBoardRepository seriesBoardRepository;
+    private final BoardRepository boardRepository;
     private final BoardService boardService;
 
     //내 시리즈 조회
@@ -74,5 +78,19 @@ public class SeriesService {
 
         seriesBoardRepository.deleteAll(seriesBoards);
         seriesRepository.delete(series);
+    }
+
+    //시리즈에 게시글 추가
+    public void addToSeries(Long seriesId, Long boardId) {
+        Series series = seriesRepository.findById(seriesId)
+                .orElseThrow(() -> new SeriesNotFoundException("존재하지 않는 아카이브 아이디입니다."));
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글 번호입니다."));
+
+        SeriesBoard seriesBoard = new SeriesBoard();
+        seriesBoard.setSeries(series);
+        seriesBoard.setBoard(board);
+        series.setOwner(series.getOwner());
+        seriesBoardRepository.save(seriesBoard);
     }
 }
