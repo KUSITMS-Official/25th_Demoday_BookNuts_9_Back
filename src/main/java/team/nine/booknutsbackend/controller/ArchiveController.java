@@ -53,7 +53,7 @@ public class ArchiveController {
     @GetMapping("/addarchive/{archiveId}/{boardId}")
     public ResponseEntity<Object> addToArchive(@PathVariable Long archiveId, @PathVariable Long boardId, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        archiveService.addToArchive(archiveId, boardId);
+        archiveService.addToArchive(archiveId, boardId, user);
 
         Map<String, String> map = new HashMap<>();
         map.put("result", "아카이브에 추가 완료");
@@ -94,6 +94,7 @@ public class ArchiveController {
 
         Archive updateArchive = archiveService.update(archive, user);
         return new ResponseEntity<>(ArchiveResponse.archiveResponse(updateArchive), HttpStatus.OK);
-
     }
+
+
 }

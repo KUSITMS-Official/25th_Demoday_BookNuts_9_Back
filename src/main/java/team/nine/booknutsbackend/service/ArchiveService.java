@@ -9,6 +9,7 @@ import team.nine.booknutsbackend.domain.archive.Archive;
 import team.nine.booknutsbackend.domain.archive.ArchiveBoard;
 import team.nine.booknutsbackend.dto.Response.ArchiveResponse;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
+import team.nine.booknutsbackend.exception.archive.ArchiveDuplicateException;
 import team.nine.booknutsbackend.exception.archive.ArchiveNotFoundException;
 import team.nine.booknutsbackend.exception.board.BoardNotFoundException;
 import team.nine.booknutsbackend.exception.board.NoAccessException;
@@ -60,11 +61,14 @@ public class ArchiveService {
     }
 
     //아카이브에 추가
-    public void addToArchive(Long archiveId, Long boardId) {
+    public void addToArchive(Long archiveId, Long boardId, User user) {
         Archive archive = archiveRepository.findById(archiveId)
                 .orElseThrow(() -> new ArchiveNotFoundException("존재하지 않는 아카이브 아이디입니다."));
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글 번호입니다."));
+
+        //아카이브 중복체크
+        if(archiveBoardRepository.findByBoardAndOwner(board, user).isPresent()) throw new ArchiveDuplicateException("이미 아카이브에 게시글이 존재합니다");
 
         ArchiveBoard archiveBoard = new ArchiveBoard();
         archiveBoard.setArchive(archive);
