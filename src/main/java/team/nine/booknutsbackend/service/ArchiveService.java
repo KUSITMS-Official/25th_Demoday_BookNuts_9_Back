@@ -68,7 +68,8 @@ public class ArchiveService {
                 .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글 번호입니다."));
 
         //아카이브 중복체크
-        if(archiveBoardRepository.findByBoardAndOwner(board, user).isPresent()) throw new ArchiveDuplicateException("이미 아카이브에 게시글이 존재합니다");
+        if (archiveBoardRepository.findByBoardAndOwner(board, user).isPresent())
+            throw new ArchiveDuplicateException("이미 아카이브에 게시글이 존재합니다");
 
         ArchiveBoard archiveBoard = new ArchiveBoard();
         archiveBoard.setArchive(archive);

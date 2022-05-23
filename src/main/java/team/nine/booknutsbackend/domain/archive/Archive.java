@@ -22,7 +22,7 @@ public class Archive {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name ="owner")
+    @JoinColumn(name = "owner")
     private User owner;
 
     @Column(length = 300, nullable = false)

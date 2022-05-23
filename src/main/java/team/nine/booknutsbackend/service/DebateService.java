@@ -48,10 +48,13 @@ public class DebateService {
     public DebateRoom join(Long roomId, User user, boolean opinion) throws CannotJoinException {
         DebateRoom room = findRoom(roomId);
 
-        if (debateUserRepository.findByDebateRoomAndUser(room, user).isPresent()) throw new CannotJoinException("이미 참여 중인 유저입니다.");
+        if (debateUserRepository.findByDebateRoomAndUser(room, user).isPresent())
+            throw new CannotJoinException("이미 참여 중인 유저입니다.");
         if (room.getStatus() != 0) throw new CannotJoinException("참여할 수 없는 토론 상태입니다.");
-        if (opinion && (room.getMaxUser() / 2 <= room.getCurYesUser())) throw new CannotJoinException("찬성측 인원 초과로 참여할 수 없습니다.");
-        if (!opinion && (room.getMaxUser() / 2 <= room.getCurNoUser())) throw new CannotJoinException("반대측 인원 초과로 참여할 수 없습니다.");
+        if (opinion && (room.getMaxUser() / 2 <= room.getCurYesUser()))
+            throw new CannotJoinException("찬성측 인원 초과로 참여할 수 없습니다.");
+        if (!opinion && (room.getMaxUser() / 2 <= room.getCurNoUser()))
+            throw new CannotJoinException("반대측 인원 초과로 참여할 수 없습니다.");
 
         DebateUser debateUser = new DebateUser();
         debateUser.setUser(user);
@@ -76,8 +79,8 @@ public class DebateService {
     public DebateRoom changeStatus(Long roomId, int status, User user) throws StatusChangeException {
         DebateRoom room = findRoom(roomId);
 
-        if(room.getOwner().getUserId() != user.getUserId()) throw new StatusChangeException("토론 개설자만 상태를 변경할 수 있습니다.");
-        if(status <= 0 || status > 2) throw new StatusChangeException("상태값은 토론 진행 중(=1) 또는 토론 종료(=2) 여야 합니다.");
+        if (room.getOwner().getUserId() != user.getUserId()) throw new StatusChangeException("토론 개설자만 상태를 변경할 수 있습니다.");
+        if (status <= 0 || status > 2) throw new StatusChangeException("상태값은 토론 진행 중(=1) 또는 토론 종료(=2) 여야 합니다.");
 
         room.setStatus(status);
         return debateRoomRepository.save(room);
@@ -102,7 +105,7 @@ public class DebateService {
     @Transactional(readOnly = true)
     public List<DebateRoomResponse> customDebate(int type) {
         List<DebateRoom> rooms;
-        if(type == 2) rooms = debateRoomRepository.findByStatus(0);
+        if (type == 2) rooms = debateRoomRepository.findByStatus(0);
         else rooms = debateRoomRepository.findByTypeAndStatus(type, 0);
         List<DebateRoomResponse> roomDtoList = new ArrayList<>();
 
@@ -111,7 +114,7 @@ public class DebateService {
         for (DebateRoom room : rooms) {
             roomDtoList.add(DebateRoomResponse.roomResponse(room));
             cnt++;
-            if(cnt == 3) break;
+            if (cnt == 3) break;
         }
 
         return roomDtoList;
@@ -121,7 +124,7 @@ public class DebateService {
     @Transactional(readOnly = true)
     public List<DebateRoomResponse> ingDebate(int type) {
         List<DebateRoom> rooms;
-        if(type == 2) rooms = debateRoomRepository.findByStatus(1);
+        if (type == 2) rooms = debateRoomRepository.findByStatus(1);
         else rooms = debateRoomRepository.findByTypeAndStatus(type, 1);
         List<DebateRoomResponse> roomDtoList = new ArrayList<>();
 
@@ -136,7 +139,7 @@ public class DebateService {
     @Transactional(readOnly = true)
     public List<DebateRoomResponse> readyDebate(int type) {
         List<DebateRoom> rooms;
-        if(type == 2) rooms = debateRoomRepository.findByStatus(0);
+        if (type == 2) rooms = debateRoomRepository.findByStatus(0);
         else rooms = debateRoomRepository.findByTypeAndStatus(type, 0);
         List<DebateRoomResponse> roomDtoList = new ArrayList<>();
 

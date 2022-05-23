@@ -18,11 +18,11 @@ public class SeriesBoard {
     private Long SeriesBoardId;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="series")
+    @JoinColumn(name = "series")
     private Series series;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="board")
+    @JoinColumn(name = "board")
     private Board board;
 
 }

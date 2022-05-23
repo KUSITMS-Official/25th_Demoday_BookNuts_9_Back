@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @JsonIgnoreProperties(value = {"password", "enabled", "authorities", "accountNonLocked", "accountNonExpired", "credentialsNonExpired"})
 public class User implements UserDetails {
 
@@ -92,4 +93,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

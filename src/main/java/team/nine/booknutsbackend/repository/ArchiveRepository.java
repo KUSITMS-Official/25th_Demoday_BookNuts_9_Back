@@ -9,7 +9,5 @@ import java.util.Optional;
 
 public interface ArchiveRepository extends JpaRepository<Archive, Long> {
     List<Archive> findAllByOwner(User user);
-
     Optional<Archive> findByArchiveIdAndOwner(Long archiveId, User user);
-
 }

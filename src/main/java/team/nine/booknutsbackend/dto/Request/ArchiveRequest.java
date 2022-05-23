@@ -10,11 +10,12 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Builder
 public class ArchiveRequest {
+
     @NotBlank String title;
     @NotBlank String content;
     String imgUrl;
 
-    public static Archive newArchive(ArchiveRequest archiveRequest, User user){
+    public static Archive newArchive(ArchiveRequest archiveRequest, User user) {
         Archive archive = new Archive();
         archive.setTitle(archiveRequest.getTitle());
         archive.setContent(archiveRequest.getContent());
@@ -23,4 +24,5 @@ public class ArchiveRequest {
 
         return archive;
     }
+
 }

@@ -27,6 +27,7 @@ public class Series {
     private String imgUrl;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="owner")
+    @JoinColumn(name = "owner")
     private User owner;
+
 }

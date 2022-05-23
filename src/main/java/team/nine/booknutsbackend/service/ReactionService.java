@@ -30,7 +30,7 @@ public class ReactionService {
         List<Nuts> nutsList = user.getNutsList();
         Nuts targetNuts = nutsRepository.findByBoardAndUser(board, user);
 
-        if(nutsList.contains(targetNuts)){
+        if (nutsList.contains(targetNuts)) {
             nutsRepository.delete(targetNuts);
             return "넛츠 취소";
         }
@@ -50,7 +50,7 @@ public class ReactionService {
         List<Heart> hearts = user.getHearts();
         Heart targetHeart = heartRepository.findByBoardAndUser(board, user);
 
-        if(hearts.contains(targetHeart)){
+        if (hearts.contains(targetHeart)) {
             heartRepository.delete(targetHeart);
             return "좋아요 취소";
         }
@@ -61,4 +61,5 @@ public class ReactionService {
         heartRepository.save(heart);
         return "좋아요 누름";
     }
+
 }

@@ -39,4 +39,5 @@ public class DebateRoomResponse {
                 .owner(room.getOwner().getNickname())
                 .build();
     }
+
 }

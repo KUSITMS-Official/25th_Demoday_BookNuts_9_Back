@@ -51,4 +51,5 @@ public class Board {
 
     @Column(nullable = false)
     private int archiveCnt = 0;
+
 }

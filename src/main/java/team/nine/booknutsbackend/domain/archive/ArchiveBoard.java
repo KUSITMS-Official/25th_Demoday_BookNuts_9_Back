@@ -17,14 +17,15 @@ public class ArchiveBoard {
     private Long archiveBoardId;
 
     @ManyToOne
-    @JoinColumn(name ="archive")
+    @JoinColumn(name = "archive")
     private Archive archive;
 
     @ManyToOne
-    @JoinColumn(name ="board")
+    @JoinColumn(name = "board")
     private Board board;
 
     @ManyToOne
-    @JoinColumn(name ="owner")
+    @JoinColumn(name = "owner")
     private User owner;
+
 }

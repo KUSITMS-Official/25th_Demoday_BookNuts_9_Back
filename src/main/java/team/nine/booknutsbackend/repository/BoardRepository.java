@@ -6,6 +6,6 @@ import team.nine.booknutsbackend.domain.User;
 
 import java.util.Optional;
 
-public interface BoardRepository extends JpaRepository<Board, Long>  {
+public interface BoardRepository extends JpaRepository<Board, Long> {
     Optional<Board> findByBoardIdAndUser(Long boardId, User user);
 }
