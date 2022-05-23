@@ -72,13 +72,4 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
-    //게시글 카운트 데이터 업데이트 (공감, 넛츠, 아카이브)
-    @Transactional
-    public void updateCount(Board board) {
-        board.setNutsCnt(nutsRepository.countByBoard(board));
-        board.setHeartCnt(heartRepository.countByBoard(board));
-        board.setArchiveCnt(archiveBoardRepository.countByBoard(board));
-        boardRepository.save(board);
-    }
-
 }

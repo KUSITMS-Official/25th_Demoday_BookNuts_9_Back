@@ -5,6 +5,8 @@ import lombok.Setter;
 import team.nine.booknutsbackend.domain.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -29,5 +31,8 @@ public class Series {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "owner")
     private User owner;
+
+    @OneToMany(mappedBy = "series")
+    private List<SeriesBoard> seriesBoardList = new ArrayList<>();
 
 }
