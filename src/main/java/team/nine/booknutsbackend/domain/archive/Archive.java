@@ -34,7 +34,7 @@ public class Archive {
     private String imgUrl;
 
     @Column(nullable = false)
-    private String createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    private String createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
     @OneToMany(mappedBy = "archive")
     @JsonIgnore
