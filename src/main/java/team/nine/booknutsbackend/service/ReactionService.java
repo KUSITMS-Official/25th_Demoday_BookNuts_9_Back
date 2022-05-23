@@ -28,12 +28,11 @@ public class ReactionService {
                 .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글 아이디입니다."));
 
         List<Nuts> nutsList = user.getNutsList();
+        Nuts targetNuts = nutsRepository.findByBoardAndUser(board, user);
 
-        for (Nuts nuts : nutsList) {
-            if (nuts.getBoard() == board) {
-                nutsRepository.delete(nuts);
-                return "넛츠 취소";
-            }
+        if(nutsList.contains(targetNuts)){
+            nutsRepository.delete(targetNuts);
+            return "넛츠 취소";
         }
 
         Nuts nuts = new Nuts();
@@ -49,12 +48,11 @@ public class ReactionService {
                 .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글 아이디입니다."));
 
         List<Heart> hearts = user.getHearts();
+        Heart targetHeart = heartRepository.findByBoardAndUser(board, user);
 
-        for (Heart heart : hearts) {
-            if (heart.getBoard() == board) {
-                heartRepository.delete(heart);
-                return "좋아요 취소";
-            }
+        if(hearts.contains(targetHeart)){
+            heartRepository.delete(targetHeart);
+            return "좋아요 취소";
         }
 
         Heart heart = new Heart();
