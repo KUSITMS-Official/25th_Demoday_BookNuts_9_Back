@@ -9,6 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import team.nine.booknutsbackend.domain.archive.ArchiveBoard;
+import team.nine.booknutsbackend.domain.reaction.Heart;
+import team.nine.booknutsbackend.domain.reaction.Nuts;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -57,6 +59,14 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner")
     @JsonIgnore
     private List<ArchiveBoard> archiveBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Heart> hearts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Nuts> nutsList = new ArrayList<>();
 
     @Override
     public String getUsername() {

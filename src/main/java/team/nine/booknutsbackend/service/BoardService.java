@@ -10,6 +10,8 @@ import team.nine.booknutsbackend.exception.board.BoardNotFoundException;
 import team.nine.booknutsbackend.exception.board.NoAccessException;
 import team.nine.booknutsbackend.repository.ArchiveBoardRepository;
 import team.nine.booknutsbackend.repository.BoardRepository;
+import team.nine.booknutsbackend.repository.HeartRepository;
+import team.nine.booknutsbackend.repository.NutsRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +23,8 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final ArchiveBoardRepository archiveBoardRepository;
+    private final NutsRepository nutsRepository;
+    private final HeartRepository heartRepository;
 
     //게시글 작성
     @Transactional
@@ -71,8 +75,8 @@ public class BoardService {
     //게시글 카운트 데이터 업데이트 (공감, 넛츠, 아카이브)
     @Transactional
     public void updateCount(Board board) {
-        //board.setNutsCnt();
-        //board.setHeartCnt();
+        board.setNutsCnt(nutsRepository.countByBoard(board));
+        board.setHeartCnt(heartRepository.countByBoard(board));
         board.setArchiveCnt(archiveBoardRepository.countByBoard(board));
         boardRepository.save(board);
     }
