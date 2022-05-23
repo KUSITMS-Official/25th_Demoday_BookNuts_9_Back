@@ -34,7 +34,7 @@ public class SeriesResponse {
         List<SeriesBoard> seriesBoardList = series.getSeriesBoardList();
         int totalNuts = 0;
         for (SeriesBoard seriesBoard : seriesBoardList) {
-            totalNuts += seriesBoard.getBoard().getNutsCnt();
+            totalNuts += seriesBoard.getBoard().getNutsList().size();
         }
         return totalNuts;
     }

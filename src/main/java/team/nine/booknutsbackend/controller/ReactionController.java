@@ -28,22 +28,18 @@ public class ReactionController {
     @PutMapping("/nuts/{boardId}")
     public ResponseEntity<Object> clickNuts(@PathVariable Long boardId, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        String result = reactionService.clickNuts(boardId, user);
-        boardService.updateCount(boardService.findBoard(boardId));
 
         Map<String, String> map = new HashMap<>();
-        map.put("result", result);
+        map.put("result", reactionService.clickNuts(boardId, user));
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @PutMapping("/heart/{boardId}")
     public ResponseEntity<Object> clickHeart(@PathVariable Long boardId, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        String result = reactionService.clickHeart(boardId, user);
-        boardService.updateCount(boardService.findBoard(boardId));
 
         Map<String, String> map = new HashMap<>();
-        map.put("result", result);
+        map.put("result", reactionService.clickHeart(boardId, user));
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
