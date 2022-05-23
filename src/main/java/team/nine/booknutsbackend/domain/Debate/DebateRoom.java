@@ -5,6 +5,7 @@ import lombok.Setter;
 import team.nine.booknutsbackend.domain.User;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -53,5 +54,8 @@ public class DebateRoom {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "owner")
     private User owner;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 }
