@@ -68,15 +68,14 @@ public class ArchiveService {
                 .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글 번호입니다."));
 
         //아카이브 중복체크
-        if(archiveBoardRepository.findByBoardAndOwner(board, user).isPresent()) throw new ArchiveDuplicateException("이미 아카이브에 게시글이 존재합니다");
+        if (archiveBoardRepository.findByBoardAndOwner(board, user).isPresent())
+            throw new ArchiveDuplicateException("이미 아카이브에 게시글이 존재합니다");
 
         ArchiveBoard archiveBoard = new ArchiveBoard();
         archiveBoard.setArchive(archive);
         archiveBoard.setBoard(board);
         archiveBoard.setOwner(archive.getOwner());
         archiveBoardRepository.save(archiveBoard);
-
-        boardService.updateCount(board); //게시글 카운트 데이터 업데이트
     }
 
     //아카이브 삭제
@@ -86,10 +85,7 @@ public class ArchiveService {
                 .orElseThrow(() -> new NoAccessException("해당 유저는 삭제 권한이 없습니다."));
         List<ArchiveBoard> archiveBoards = archiveBoardRepository.findByArchive(archive);
 
-        for (ArchiveBoard archiveBoard : archiveBoards) {
-            archiveBoardRepository.delete(archiveBoard);
-            boardService.updateCount(archiveBoard.getBoard());
-        }
+        archiveBoardRepository.deleteAll(archiveBoards);
         archiveRepository.delete(archive);
     }
 
@@ -102,8 +98,6 @@ public class ArchiveService {
 
         ArchiveBoard archiveBoard = archiveBoardRepository.findByArchiveAndBoard(archive, board);
         archiveBoardRepository.delete(archiveBoard);
-
-        boardService.updateCount(board); //게시글 카운트 데이터 업데이트
     }
 
     //아카이브 조회(아카이브명, 내용, 이미지)

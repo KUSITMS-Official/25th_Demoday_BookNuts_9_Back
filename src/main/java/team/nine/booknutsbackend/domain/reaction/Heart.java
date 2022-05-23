@@ -19,10 +19,11 @@ public class Heart {
     private Long heartId;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="user")
+    @JoinColumn(name = "user")
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="board")
+    @JoinColumn(name = "board")
     private Board board;
+
 }

@@ -10,6 +10,8 @@ import team.nine.booknutsbackend.exception.board.BoardNotFoundException;
 import team.nine.booknutsbackend.exception.board.NoAccessException;
 import team.nine.booknutsbackend.repository.ArchiveBoardRepository;
 import team.nine.booknutsbackend.repository.BoardRepository;
+import team.nine.booknutsbackend.repository.HeartRepository;
+import team.nine.booknutsbackend.repository.NutsRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +23,8 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final ArchiveBoardRepository archiveBoardRepository;
+    private final NutsRepository nutsRepository;
+    private final HeartRepository heartRepository;
 
     //게시글 작성
     @Transactional
@@ -43,6 +47,20 @@ public class BoardService {
         return boardDtoList;
     }
 
+    //내가 작성한 게시글
+    @Transactional(readOnly = true)
+    public List<BoardResponse> myBoardList(User user) {
+        List<Board> myBoards = boardRepository.findByUser(user);
+        List<BoardResponse> boardDtoList = new ArrayList<>();
+
+        for (Board board : myBoards) {
+            boardDtoList.add(BoardResponse.boardResponse(board, user));
+        }
+
+        Collections.reverse(boardDtoList); //최신순
+        return boardDtoList;
+    }
+    
     //특정 게시글 조회
     @Transactional(readOnly = true)
     public Board findBoard(Long boardId) throws BoardNotFoundException {
@@ -67,14 +85,5 @@ public class BoardService {
 
         boardRepository.delete(board);
     }
-
-    //게시글 카운트 데이터 업데이트 (공감, 넛츠, 아카이브)
-    @Transactional
-    public void updateCount(Board board) {
-        //board.setNutsCnt();
-        //board.setHeartCnt();
-        board.setArchiveCnt(archiveBoardRepository.countByBoard(board));
-        boardRepository.save(board);
-    }
-
+    
 }

@@ -5,6 +5,8 @@ import lombok.Getter;
 import team.nine.booknutsbackend.domain.Board;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.domain.archive.ArchiveBoard;
+import team.nine.booknutsbackend.domain.reaction.Heart;
+import team.nine.booknutsbackend.domain.reaction.Nuts;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,26 +43,38 @@ public class BoardResponse {
                 .bookAuthor(board.getBookAuthor())
                 .bookImgUrl(board.getBookImgUrl())
                 .bookGenre(board.getBookGenre())
-                .nutsCnt(board.getNutsCnt())
-                .heartCnt(board.getHeartCnt())
-                .archiveCnt(board.getArchiveCnt())
-                .isNuts(false)
-                .isHeart(false)
+                .nutsCnt(board.getNutsList().size())
+                .heartCnt(board.getHearts().size())
+                .archiveCnt(board.getArchiveBoards().size())
+                .isNuts(getIsNuts(board, user))
+                .isHeart(getIsHeart(board, user))
                 .isArchived(getIsArchived(board, user))
                 .curUser(Objects.equals(board.getUser().getUserId(), user.getUserId()))
                 .build();
     }
 
+    private static Boolean getIsNuts(Board board, User user) {
+        List<Nuts> nutsList = user.getNutsList();
+        for (Nuts nuts : nutsList) {
+            if (nuts.getBoard().equals(board)) return true;
+        }
+        return false;
+    }
+
+    private static Boolean getIsHeart(Board board, User user) {
+        List<Heart> hearts = user.getHearts();
+        for (Heart heart : hearts) {
+            if (heart.getBoard().equals(board)) return true;
+        }
+        return false;
+    }
+
     private static Boolean getIsArchived(Board board, User user) {
         List<ArchiveBoard> archiveBoards = user.getArchiveBoards();
-        boolean result = false;
         for (ArchiveBoard archiveBoard : archiveBoards) {
-            if (Objects.equals(archiveBoard.getBoard().getBoardId(), board.getBoardId())) {
-                result = true;
-                break;
-            }
+            if (archiveBoard.getBoard().equals(board)) return true;
         }
-
-        return result;
+        return false;
     }
+
 }

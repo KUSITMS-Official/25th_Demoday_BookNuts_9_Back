@@ -28,4 +28,5 @@ public class JWTAuthInterceptor implements HandlerInterceptor {
 
         return true;
     }
+
 }

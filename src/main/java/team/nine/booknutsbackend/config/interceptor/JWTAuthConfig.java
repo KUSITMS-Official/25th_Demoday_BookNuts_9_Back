@@ -17,4 +17,5 @@ public class JWTAuthConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/auth/**"); //예외 처리할 주소
     }
+
 }

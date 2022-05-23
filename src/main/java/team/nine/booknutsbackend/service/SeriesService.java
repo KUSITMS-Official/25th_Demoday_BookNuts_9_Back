@@ -10,10 +10,8 @@ import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.SeriesRequest;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.dto.Response.SeriesResponse;
-import team.nine.booknutsbackend.exception.archive.ArchiveDuplicateException;
 import team.nine.booknutsbackend.exception.board.BoardNotFoundException;
 import team.nine.booknutsbackend.exception.board.NoAccessException;
-import team.nine.booknutsbackend.exception.series.CheckMyboard;
 import team.nine.booknutsbackend.exception.series.SeriesDuplicateException;
 import team.nine.booknutsbackend.exception.series.SeriesNotFoundException;
 import team.nine.booknutsbackend.repository.BoardRepository;
@@ -91,7 +89,8 @@ public class SeriesService {
                 .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글 번호입니다."));
 
         //시리즈 중복체크
-        if(seriesBoardRepository.findByBoardAndSeries(board, series).isPresent()) throw new SeriesDuplicateException("이미 시리즈에 게시글이 존재합니다.");
+        if (seriesBoardRepository.findByBoardAndSeries(board, series).isPresent())
+            throw new SeriesDuplicateException("이미 시리즈에 게시글이 존재합니다.");
 
         SeriesBoard seriesBoard = new SeriesBoard();
         seriesBoard.setSeries(series);
@@ -99,4 +98,5 @@ public class SeriesService {
         series.setOwner(series.getOwner());
         seriesBoardRepository.save(seriesBoard);
     }
+
 }

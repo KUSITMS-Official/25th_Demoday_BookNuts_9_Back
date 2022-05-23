@@ -42,6 +42,13 @@ public class BoardController {
         return boardService.boardList(user, type);
     }
 
+    //내가 작성한 게시글
+    @GetMapping("/mypost")
+    public List<BoardResponse> myBoardList(Principal principal){
+        User user = userService.loadUserByUsername(principal.getName());
+        return boardService.myBoardList(user);
+    }
+
     //특정 게시글 조회
     @GetMapping("/{boardId}")
     public ResponseEntity<BoardResponse> findPost(@PathVariable Long boardId, Principal principal) {

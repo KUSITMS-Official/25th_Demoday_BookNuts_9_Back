@@ -22,7 +22,6 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -53,9 +52,11 @@ public class UserController {
             throw new PasswordErrorException("잘못된 비밀번호입니다.");
         }
 
-        //토큰 생성 및 저장
-        String token = jwtTokenProvider.createToken(loginUser.getUsername(), loginUser.getRoles()); //getUsername -> 이메일 반환
-        userService.updateToken(loginUser.getUserId(), token);
+        String token = loginUser.getAccessToken();
+        if(!jwtTokenProvider.validateToken(token)){
+            token = jwtTokenProvider.createToken(loginUser.getUsername(), loginUser.getRoles()); //getUsername -> 이메일 반환
+            userService.updateToken(loginUser.getUserId(), token);
+        }
 
         Map<String, String> map = new LinkedHashMap<>();
         map.put("nickname", loginUser.getNickname());
@@ -67,7 +68,6 @@ public class UserController {
     @GetMapping("/userinfo")
     public ResponseEntity<Object> userInfoByHeaderToken(Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

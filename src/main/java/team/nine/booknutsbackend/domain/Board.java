@@ -2,10 +2,15 @@ package team.nine.booknutsbackend.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import team.nine.booknutsbackend.domain.archive.ArchiveBoard;
+import team.nine.booknutsbackend.domain.reaction.Heart;
+import team.nine.booknutsbackend.domain.reaction.Nuts;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -43,12 +48,13 @@ public class Board {
     @JoinColumn(name = "writer")
     private User user;
 
-    @Column(nullable = false)
-    private int nutsCnt = 0;
+    @OneToMany(mappedBy = "board")
+    private List<Nuts> nutsList = new ArrayList<>();
 
-    @Column(nullable = false)
-    private int heartCnt = 0;
+    @OneToMany(mappedBy = "board")
+    private List<Heart> hearts = new ArrayList<>();
 
-    @Column(nullable = false)
-    private int archiveCnt = 0;
+    @OneToMany(mappedBy = "board")
+    private List<ArchiveBoard> archiveBoards = new ArrayList<>();
+
 }
