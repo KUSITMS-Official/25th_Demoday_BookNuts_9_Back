@@ -33,10 +33,11 @@ public class ParentReply {
     private Boolean deleteCheck = false; //true : 삭제됨
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="writer")
+    @JoinColumn(name = "writer")
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="board")
+    @JoinColumn(name = "board")
     private Board board;
+
 }

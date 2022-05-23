@@ -37,8 +37,7 @@ public class ArchiveController {
     @PostMapping("/createarchive")
     public ResponseEntity<ArchiveResponse> createArchive(@RequestBody ArchiveRequest archiveRequest, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        Archive archive=archiveService.saveArchive(ArchiveRequest.newArchive(archiveRequest, user));
-
+        Archive archive = archiveService.saveArchive(ArchiveRequest.newArchive(archiveRequest, user));
         return new ResponseEntity<>(ArchiveResponse.archiveResponse(archive), HttpStatus.CREATED);
     }
 
@@ -84,7 +83,7 @@ public class ArchiveController {
 
     //아카이브 수정
     @PutMapping("/{archiveId}")
-    public ResponseEntity<ArchiveResponse> update(@PathVariable Long archiveId, @RequestBody ArchiveRequest archiveRequest, Principal principal) throws NoAccessException{
+    public ResponseEntity<ArchiveResponse> update(@PathVariable Long archiveId, @RequestBody ArchiveRequest archiveRequest, Principal principal) throws NoAccessException {
         Archive archive = archiveService.findByArchiveId(archiveId);
         User user = userService.loadUserByUsername(principal.getName());
 
@@ -95,6 +94,5 @@ public class ArchiveController {
         Archive updateArchive = archiveService.update(archive, user);
         return new ResponseEntity<>(ArchiveResponse.archiveResponse(updateArchive), HttpStatus.OK);
     }
-
 
 }

@@ -22,7 +22,6 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -67,7 +66,6 @@ public class UserController {
     @GetMapping("/userinfo")
     public ResponseEntity<Object> userInfoByHeaderToken(Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

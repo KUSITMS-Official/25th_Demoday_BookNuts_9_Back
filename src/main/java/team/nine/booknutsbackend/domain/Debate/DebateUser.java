@@ -25,6 +25,7 @@ public class DebateUser {
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="debateRoom")
+    @JoinColumn(name = "debateRoom")
     private DebateRoom debateRoom;
+
 }

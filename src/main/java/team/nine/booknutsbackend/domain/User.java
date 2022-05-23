@@ -9,6 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import team.nine.booknutsbackend.domain.archive.ArchiveBoard;
+import team.nine.booknutsbackend.domain.reaction.Heart;
+import team.nine.booknutsbackend.domain.reaction.Nuts;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,7 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @JsonIgnoreProperties(value = {"password", "enabled", "authorities", "accountNonLocked", "accountNonExpired", "credentialsNonExpired"})
 public class User implements UserDetails {
 
@@ -58,6 +61,14 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<ArchiveBoard> archiveBoards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Heart> hearts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Nuts> nutsList = new ArrayList<>();
+
     @Override
     public String getUsername() {
         return email;
@@ -82,4 +93,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

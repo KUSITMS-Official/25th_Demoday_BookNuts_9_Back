@@ -19,10 +19,11 @@ public class Nuts {
     private Long nutsId;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="user")
+    @JoinColumn(name = "user")
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="board")
+    @JoinColumn(name = "board")
     private Board board;
+
 }

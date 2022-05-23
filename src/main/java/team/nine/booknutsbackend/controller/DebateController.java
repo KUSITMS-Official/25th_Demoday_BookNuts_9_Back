@@ -80,4 +80,5 @@ public class DebateController {
         map.put("현재 대기 중인 토론", debateService.readyDebate(type));
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
 }
