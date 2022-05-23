@@ -1,5 +1,6 @@
 package team.nine.booknutsbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import team.nine.booknutsbackend.domain.archive.ArchiveBoard;
@@ -49,12 +50,15 @@ public class Board {
     private User user;
 
     @OneToMany(mappedBy = "board")
+    @JsonIgnore
     private List<Nuts> nutsList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
+    @JsonIgnore
     private List<Heart> hearts = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
+    @JsonIgnore
     private List<ArchiveBoard> archiveBoards = new ArrayList<>();
 
 }

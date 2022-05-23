@@ -1,5 +1,6 @@
 package team.nine.booknutsbackend.domain.Series;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import team.nine.booknutsbackend.domain.User;
@@ -33,6 +34,7 @@ public class Series {
     private User owner;
 
     @OneToMany(mappedBy = "series")
+    @JsonIgnore
     private List<SeriesBoard> seriesBoardList = new ArrayList<>();
 
 }

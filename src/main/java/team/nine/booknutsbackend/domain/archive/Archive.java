@@ -1,5 +1,6 @@
 package team.nine.booknutsbackend.domain.archive;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import team.nine.booknutsbackend.domain.User;
@@ -36,6 +37,7 @@ public class Archive {
     private String createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
     @OneToMany(mappedBy = "archive")
+    @JsonIgnore
     private List<ArchiveBoard> archiveBoardList = new ArrayList<>();
 
 }
