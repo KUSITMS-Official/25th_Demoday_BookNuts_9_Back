@@ -12,6 +12,8 @@ public class ArchiveResponse {
     String title;
     String content;
     String imgUrl;
+    int archiveCnt;
+    String createdAt;
 
     public static ArchiveResponse archiveResponse(Archive archive) {
         return ArchiveResponse.builder()
@@ -19,6 +21,8 @@ public class ArchiveResponse {
                 .title(archive.getTitle())
                 .content(archive.getContent())
                 .imgUrl(archive.getImgUrl())
+                .archiveCnt(archive.getArchiveBoardList().size())
+                .createdAt(archive.getCreatedDate())
                 .build();
     }
 
