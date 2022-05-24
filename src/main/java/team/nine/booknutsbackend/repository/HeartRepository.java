@@ -6,6 +6,5 @@ import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.domain.reaction.Heart;
 
 public interface HeartRepository extends JpaRepository<Heart, Long> {
-    int countByBoard(Board board);
     Heart findByBoardAndUser(Board board, User user);
 }

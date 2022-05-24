@@ -6,6 +6,5 @@ import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.domain.reaction.Nuts;
 
 public interface NutsRepository extends JpaRepository<Nuts, Long> {
-    int countByBoard(Board board);
     Nuts findByBoardAndUser(Board board, User user);
 }

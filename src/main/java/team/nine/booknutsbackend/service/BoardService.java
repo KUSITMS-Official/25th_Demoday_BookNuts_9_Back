@@ -8,10 +8,7 @@ import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.exception.board.BoardNotFoundException;
 import team.nine.booknutsbackend.exception.board.NoAccessException;
-import team.nine.booknutsbackend.repository.ArchiveBoardRepository;
 import team.nine.booknutsbackend.repository.BoardRepository;
-import team.nine.booknutsbackend.repository.HeartRepository;
-import team.nine.booknutsbackend.repository.NutsRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,9 +19,6 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final ArchiveBoardRepository archiveBoardRepository;
-    private final NutsRepository nutsRepository;
-    private final HeartRepository heartRepository;
 
     //게시글 작성
     @Transactional

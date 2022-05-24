@@ -85,7 +85,7 @@ public class SeriesService {
     //시리즈에 게시글 추가
     public void addToSeries(Long seriesId, Long boardId) {
         Series series = seriesRepository.findById(seriesId)
-                .orElseThrow(() -> new SeriesNotFoundException("존재하지 않는 아카이브 아이디입니다."));
+                .orElseThrow(() -> new SeriesNotFoundException("존재하지 않는 시리즈 아이디입니다."));
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글 번호입니다."));
 

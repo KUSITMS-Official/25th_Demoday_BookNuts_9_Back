@@ -27,7 +27,6 @@ public class ArchiveService {
     private final ArchiveRepository archiveRepository;
     private final ArchiveBoardRepository archiveBoardRepository;
     private final BoardRepository boardRepository;
-    private final BoardService boardService;
 
     //아카이브 리스트 조회
     @Transactional(readOnly = true)

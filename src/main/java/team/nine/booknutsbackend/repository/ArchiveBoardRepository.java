@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public interface ArchiveBoardRepository extends JpaRepository<ArchiveBoard, User> {
     List<ArchiveBoard> findByArchive(Archive archive);
-    int countByBoard(Board board);
     ArchiveBoard findByArchiveAndBoard(Archive archive, Board board);
     Optional<ArchiveBoard> findByBoardAndOwner(Board board, User owner);
 }
