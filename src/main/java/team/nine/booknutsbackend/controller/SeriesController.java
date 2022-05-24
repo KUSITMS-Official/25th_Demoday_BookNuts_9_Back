@@ -33,14 +33,10 @@ public class SeriesController {
     }
 
     //시리즈 발행
-    @PostMapping("/groupingseries")
-    public ResponseEntity<Object> grouping(@RequestBody SeriesRequest series, Principal principal) {
+    @PostMapping("/grouping")
+    public SeriesResponse grouping(@RequestBody SeriesRequest series, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        seriesService.saveSeries(series, user);
-
-        Map<String, String> map = new HashMap<>();
-        map.put("result", "그룹핑 완료");
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return seriesService.saveSeries(series, user);
     }
 
     //특정 시리즈 조회

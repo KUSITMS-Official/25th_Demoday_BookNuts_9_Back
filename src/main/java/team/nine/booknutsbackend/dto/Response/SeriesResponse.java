@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import team.nine.booknutsbackend.domain.Series.Series;
 import team.nine.booknutsbackend.domain.Series.SeriesBoard;
-import team.nine.booknutsbackend.domain.User;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class SeriesResponse {
     int totalPost;
     int totalNuts;
 
-    public static SeriesResponse myStoryResponse(Series series, User user) {
+    public static SeriesResponse mySeriesResponse(Series series) {
         return SeriesResponse.builder()
                 .seriesId(series.getSeriesId())
                 .title(series.getTitle())

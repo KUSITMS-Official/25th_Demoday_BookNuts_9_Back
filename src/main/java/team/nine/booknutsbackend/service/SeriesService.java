@@ -37,16 +37,15 @@ public class SeriesService {
         List<SeriesResponse> seriesResponseList = new ArrayList<>();
 
         for (Series series : stories) {
-            seriesResponseList.add(SeriesResponse.myStoryResponse(series, user));
+            seriesResponseList.add(SeriesResponse.mySeriesResponse(series));
         }
         return seriesResponseList;
     }
 
     //새로운 시리즈 발행
-    public void saveSeries(SeriesRequest seriesRequest, User user) {
+    public SeriesResponse saveSeries(SeriesRequest seriesRequest, User user) {
         List<Long> boardIdlist = seriesRequest.getBoardIdlist();
-        Series series = SeriesRequest.newSeries(seriesRequest, user);
-        seriesRepository.save(series);
+        Series series = seriesRepository.save(SeriesRequest.newSeries(seriesRequest, user));
 
         for (Long boardId : boardIdlist) {
             SeriesBoard seriesBoard = new SeriesBoard();
@@ -54,6 +53,8 @@ public class SeriesService {
             seriesBoard.setBoard(boardService.findBoard(boardId));
             seriesBoardRepository.save(seriesBoard);
         }
+
+        return SeriesResponse.mySeriesResponse(series);
     }
 
     //특정 시리즈 조회
