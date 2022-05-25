@@ -41,6 +41,7 @@ public class ArchiveService {
     }
 
     //아카이브 생성
+    @Transactional
     public Archive saveArchive(Archive archive) {
         return archiveRepository.save(archive);
     }
@@ -60,6 +61,7 @@ public class ArchiveService {
     }
 
     //아카이브에 추가
+    @Transactional
     public void addToArchive(Long archiveId, Long boardId, User user) {
         Archive archive = archiveRepository.findById(archiveId)
                 .orElseThrow(() -> new ArchiveNotFoundException("존재하지 않는 아카이브 아이디입니다."));
@@ -89,6 +91,7 @@ public class ArchiveService {
     }
 
     //아카이브 안 게시글 삭제
+    @Transactional
     public void deleteBoardFromArchive(Long archiveId, Long boardId) {
         Archive archive = archiveRepository.findById(archiveId)
                 .orElseThrow(() -> new ArchiveNotFoundException("존재하지 않는 아카이브 아이디입니다."));

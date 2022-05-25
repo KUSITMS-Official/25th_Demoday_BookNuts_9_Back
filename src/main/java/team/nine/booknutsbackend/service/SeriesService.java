@@ -43,6 +43,7 @@ public class SeriesService {
     }
 
     //새로운 시리즈 발행
+    @Transactional
     public SeriesResponse saveSeries(SeriesRequest seriesRequest, User user) {
         List<Long> boardIdlist = seriesRequest.getBoardIdlist();
         Series series = seriesRepository.save(SeriesRequest.newSeries(seriesRequest, user));
@@ -83,6 +84,7 @@ public class SeriesService {
     }
 
     //시리즈에 게시글 추가
+    @Transactional
     public void addToSeries(Long seriesId, Long boardId) {
         Series series = seriesRepository.findById(seriesId)
                 .orElseThrow(() -> new SeriesNotFoundException("존재하지 않는 시리즈 아이디입니다."));
