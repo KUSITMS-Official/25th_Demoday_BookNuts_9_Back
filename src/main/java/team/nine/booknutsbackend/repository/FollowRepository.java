@@ -11,15 +11,13 @@ import java.util.Optional;
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     Optional<Follow> findByFollowingAndFollower(User unfollowing, User follower);
+    int countByFollowingAndFollower(User Following, User currentUserId);
 
     //나를 팔로우하는 사람 수 체크
     int countByFollowing(User userId);
 
     //내가 팔로우하는 사람 수 체크
     int countByFollower(User userId);
-
-
-    int countByFollowingAndFollower(User Following, User currentUserId);
 
     //내 팔로잉 리스트
     List<Follow> findByFollower(User userId);

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Response.UserProfileResponse;
 import team.nine.booknutsbackend.dto.Response.UserResponse;
-import team.nine.booknutsbackend.repository.UserRepository;
 import team.nine.booknutsbackend.service.FollowService;
 import team.nine.booknutsbackend.service.UserService;
 

@@ -7,7 +7,6 @@ import team.nine.booknutsbackend.domain.Follow;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Response.UserProfileResponse;
 import team.nine.booknutsbackend.dto.Response.UserResponse;
-import team.nine.booknutsbackend.exception.archive.ArchiveNotFoundException;
 import team.nine.booknutsbackend.exception.follow.FollowDuplicateException;
 import team.nine.booknutsbackend.repository.FollowRepository;
 
@@ -88,6 +87,7 @@ public class FollowService {
         }
 
         return  followerUserList;
+
     }
 
     //사용자 프로필 조회
