@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import team.nine.booknutsbackend.domain.Follow;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Response.UserResponse;
+import team.nine.booknutsbackend.exception.archive.ArchiveNotFoundException;
+import team.nine.booknutsbackend.exception.follow.FollowDuplicateException;
 import team.nine.booknutsbackend.repository.FollowRepository;
 
 import java.util.ArrayList;
@@ -22,6 +24,9 @@ public class FollowService {
     public void save(User following, User follower) {
         Follow follow = new Follow();
 
+        if(followRepository.findByFollowingAndFollower(following, follower).isPresent())
+            throw new FollowDuplicateException("이미 팔로잉한 계정입니다");
+
         follow.setFollowing(userService.findUserById(following.getUserId()));
         follow.setFollower(userService.findUserById(follower.getUserId()));
 
@@ -30,7 +35,8 @@ public class FollowService {
 
     //언팔로우
     public void deleteByFollowingIdAndFollowerId(User unfollowing, User follower) {
-        Follow follow = followRepository.findByFollowingAndFollower(unfollowing, follower);
+        Follow follow = followRepository.findByFollowingAndFollower(unfollowing, follower)
+                .orElseThrow(() -> new FollowDuplicateException("팔로잉하지 않은 계정입니다."));
         followRepository.delete(follow);
     }
 

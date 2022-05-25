@@ -5,11 +5,12 @@ import team.nine.booknutsbackend.domain.Follow;
 import team.nine.booknutsbackend.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
-    Follow findByFollowingAndFollower(User unfollowing, User follower);
+    Optional<Follow> findByFollowingAndFollower(User unfollowing, User follower);
 
     //나를 팔로우하는 사람 수 체크
     int countByFollowing(User userId);
