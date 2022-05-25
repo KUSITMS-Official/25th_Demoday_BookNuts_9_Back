@@ -3,8 +3,6 @@ package team.nine.booknutsbackend.exception;
 import org.springframework.http.HttpStatus;
 
 /**
- * 200 OK            요청 성공 기본 상태코드
- * 201 Created       새로운 리소스가 성공적으로 생성된 경우
  * 400 Bad Request   요청 형식이 틀렸을 경우
  * 401 Unauthorized	리소스 접근 권한이 없는 경우
  * 403 Forbidden	    해당 리소스에 접근하는 것이 허락되지 않을 경우
@@ -15,13 +13,13 @@ import org.springframework.http.HttpStatus;
  **/
 
 public class HttpStatusMap {
+
     public static HttpStatus getCode(Exception e) {
         String exception = e.getClass().getSimpleName();
         HttpStatus code;
 
         switch (exception) {
             case "NoSuchElementException":
-            case "NotFoundEmailException":  // user 관련 커스텀 예외
                 code = HttpStatus.NOT_FOUND;
                 break;
             case "ExpiredJwtException":     //토큰 관련 예외
@@ -36,4 +34,5 @@ public class HttpStatusMap {
         }
         return code;
     }
+
 }
