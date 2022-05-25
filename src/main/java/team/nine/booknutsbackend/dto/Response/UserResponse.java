@@ -2,7 +2,6 @@ package team.nine.booknutsbackend.dto.Response;
 
 import lombok.Builder;
 import lombok.Getter;
-import team.nine.booknutsbackend.domain.Follow;
 import team.nine.booknutsbackend.domain.User;
 
 @Getter
