@@ -5,11 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.User;
+import team.nine.booknutsbackend.dto.Response.UserResponse;
 import team.nine.booknutsbackend.service.FollowService;
 import team.nine.booknutsbackend.service.UserService;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -68,5 +70,17 @@ public class FollowController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    
+    //팔로잉 리스트
+    @PostMapping("/followinglist")
+    public List<UserResponse> findMyFollowingList(Principal principal) {
+        User userId = userService.loadUserByUsername(principal.getName());
+        return followService.findMyFollowingList(userId);
+    }
+
+    //팔로워 리스트
+    @PostMapping("/followerlist")
+    public List<UserResponse> findMyFollowerList(Principal principal) {
+        User userId = userService.loadUserByUsername(principal.getName());
+        return followService.findMyFollowerList(userId);
+    }
 }

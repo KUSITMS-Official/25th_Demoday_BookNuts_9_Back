@@ -4,14 +4,25 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import team.nine.booknutsbackend.domain.Follow;
 import team.nine.booknutsbackend.domain.User;
 
+import java.util.List;
 
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {
-    int countByFollowerAndFollowing(Long userId, String loginId); // 팔로우 되어있는지 count하는 메서드
 
     Follow findByFollowingAndFollower(User unfollowing, User follower);
 
-    int countByFollowing(User userId);   //나를 팔로우하는 사람 수 체크
-    int countByFollower(User userId);  //내가 팔로우하는 사람 수 체크
+    //나를 팔로우하는 사람 수 체크
+    int countByFollowing(User userId);
+
+    //내가 팔로우하는 사람 수 체크
+    int countByFollower(User userId);
+
+
     int countByFollowingAndFollower(User Following, User currentUserId);
+
+    //내 팔로잉 리스트
+    List<Follow> findByFollower(User userId);
+
+    //내 팔로워 리스트
+    List<Follow> findByFollowing(User userId);
 }

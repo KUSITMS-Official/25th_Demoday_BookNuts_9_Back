@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team.nine.booknutsbackend.domain.Follow;
 import team.nine.booknutsbackend.domain.User;
+import team.nine.booknutsbackend.dto.Response.UserResponse;
 import team.nine.booknutsbackend.repository.FollowRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -32,11 +36,11 @@ public class FollowService {
 
     //controller로 구현 안함. 필요할지 의논
     //팔로우 여부 확인
-    public boolean find(Long id, String loginId) {
-        if(followRepository.countByFollowerAndFollowing(id, loginId) == 0)
-            return false; // 팔로우 안되어있음
-        return true; // 되어있음
-    }
+//    public boolean find(Long id, String loginId) {
+//        if(followRepository.countByFollowerAndFollowing(id, loginId) == 0)
+//            return false; // 팔로우 안되어있음
+//        return true; // 되어있음
+//    }
 
     //나를 팔로우 하는 유저 수 체크
     public int findFollowing(User currentUserId) {
@@ -53,5 +57,29 @@ public class FollowService {
         if(followRepository.countByFollowingAndFollower(following, currentUserId) == 0)
             return false;
         return true;
+    }
+
+    //나의 팔로잉 리스트
+    public List<UserResponse> findMyFollowingList(User userId) {
+        List<Follow> followlist= followRepository.findByFollower(userId);
+        List<UserResponse> followingUserList = new ArrayList<>();
+
+        for (Follow follow : followlist) {
+            followingUserList.add(UserResponse.newUserResponse(follow.getFollowing()));
+        }
+
+        return  followingUserList;
+    }
+
+    //나의 팔로워 리스트
+    public List<UserResponse> findMyFollowerList(User userId) {
+        List<Follow> followlist= followRepository.findByFollowing(userId);
+        List<UserResponse> followerUserList = new ArrayList<>();
+
+        for (Follow follow : followlist) {
+            followerUserList.add(UserResponse.newUserResponse(follow.getFollower()));
+        }
+
+        return  followerUserList;
     }
 }
