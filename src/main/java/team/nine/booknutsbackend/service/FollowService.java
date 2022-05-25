@@ -38,4 +38,20 @@ public class FollowService {
         return true; // 되어있음
     }
 
+    //나를 팔로우 하는 유저 수 체크
+    public int findFollowing(User currentUserId) {
+        return followRepository.countByFollowing(currentUserId);
+    }
+
+    //내가 팔로우 하는 유저 수 체크
+    public int findFollower(User currentUserId) {
+        return followRepository.countByFollower(currentUserId);
+    }
+
+    //내가 팔로우한 사용자인지 체크
+    public boolean checkFollowingMe(User following, User currentUserId){
+        if(followRepository.countByFollowingAndFollower(following, currentUserId) == 0)
+            return false;
+        return true;
+    }
 }

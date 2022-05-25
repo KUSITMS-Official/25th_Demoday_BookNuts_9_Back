@@ -45,4 +45,28 @@ public class FollowController {
         map.put("result", "언팔로우 완료");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    //언팔로우
+    @GetMapping("/userprofile/{userId}")
+    public ResponseEntity<Object> checkUserProfile(@PathVariable Long userId, Principal principal) {
+        User LoginUser = userService.loadUserByUsername(principal.getName());    //나
+        Long currentUserId = LoginUser.getUserId();
+        User findUser = userService.findUserById(userId);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("nickname", LoginUser.getNickname());
+        map.put("followingCount", followService.findFollowing(LoginUser));
+        map.put("followerCount", followService.findFollower(LoginUser));
+
+        if ( currentUserId != userId) { //로그인한 아이디와 현재 보는 프로필 아이디가 다른 사용자
+            map.put("checkmyprofile", false);
+            map.put("checkmyFollowing", followService.checkFollowingMe(findUser, LoginUser));
+        } else {
+            map.put("checkmyprofile", true);
+        }
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    
 }
