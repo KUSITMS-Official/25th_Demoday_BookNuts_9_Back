@@ -37,13 +37,14 @@ public class SeriesService {
         List<SeriesResponse> seriesResponseList = new ArrayList<>();
 
         for (Series series : stories) {
-            seriesResponseList.add(SeriesResponse.mySeriesResponse(series));
+            seriesResponseList.add(SeriesResponse.seriesResponse(series));
         }
         return seriesResponseList;
     }
 
     //새로운 시리즈 발행
-    public SeriesResponse saveSeries(SeriesRequest seriesRequest, User user) {
+    @Transactional
+    public Series saveSeries(SeriesRequest seriesRequest, User user) {
         List<Long> boardIdlist = seriesRequest.getBoardIdlist();
         Series series = seriesRepository.save(SeriesRequest.newSeries(seriesRequest, user));
 
@@ -54,12 +55,13 @@ public class SeriesService {
             seriesBoardRepository.save(seriesBoard);
         }
 
-        return SeriesResponse.mySeriesResponse(series);
+        
+        return series;
     }
 
-    //특정 시리즈 조회
+    //특정 시리즈 내의 게시글 조회
     @Transactional(readOnly = true)
-    public List<BoardResponse> findSeries(Long seriesId, User user) throws SeriesNotFoundException {
+    public List<BoardResponse> findSeriesBoards(Long seriesId, User user) throws SeriesNotFoundException {
         Series series = seriesRepository.findById(seriesId)
                 .orElseThrow(() -> new SeriesNotFoundException("존재하지 않는 시리즈 아이디입니다."));
         List<SeriesBoard> seriesBoards = seriesBoardRepository.findBySeries(series);

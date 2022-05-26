@@ -18,7 +18,7 @@ public class SeriesResponse {
     int totalPost;
     int totalNuts;
 
-    public static SeriesResponse mySeriesResponse(Series series) {
+    public static SeriesResponse seriesResponse(Series series) {
         return SeriesResponse.builder()
                 .seriesId(series.getSeriesId())
                 .title(series.getTitle())

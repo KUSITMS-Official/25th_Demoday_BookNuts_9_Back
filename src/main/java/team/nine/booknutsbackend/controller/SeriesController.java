@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import team.nine.booknutsbackend.domain.Series.Series;
 import team.nine.booknutsbackend.domain.User;
 import team.nine.booknutsbackend.dto.Request.SeriesRequest;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
@@ -34,16 +35,17 @@ public class SeriesController {
 
     //시리즈 발행
     @PostMapping("/grouping")
-    public SeriesResponse grouping(@RequestBody SeriesRequest series, Principal principal) {
+    public ResponseEntity<SeriesResponse> grouping(@RequestBody SeriesRequest series, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        return seriesService.saveSeries(series, user);
+        Series newSeries = seriesService.saveSeries(series, user);
+        return new ResponseEntity<>(SeriesResponse.seriesResponse(newSeries), HttpStatus.CREATED);
     }
 
     //특정 시리즈 조회
     @GetMapping("/{seriesId}")
     public List<BoardResponse> findMySeries(@PathVariable Long seriesId, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        return seriesService.findSeries(seriesId, user);
+        return seriesService.findSeriesBoards(seriesId, user);
     }
 
     //시리즈 삭제
