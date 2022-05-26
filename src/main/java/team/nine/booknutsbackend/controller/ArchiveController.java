@@ -82,7 +82,7 @@ public class ArchiveController {
     }
 
     //아카이브 수정
-    @PutMapping("/{archiveId}")
+    @PatchMapping("/{archiveId}")
     public ResponseEntity<ArchiveResponse> update(@PathVariable Long archiveId, @RequestBody ArchiveRequest archiveRequest, Principal principal) throws NoAccessException {
         Archive archive = archiveService.findByArchiveId(archiveId);
         User user = userService.loadUserByUsername(principal.getName());

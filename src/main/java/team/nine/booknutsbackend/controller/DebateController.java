@@ -63,7 +63,7 @@ public class DebateController {
     }
 
     //토론장 상태 변경
-    @PostMapping("/update/{roomId}")
+    @PatchMapping("/update/{roomId}")
     public ResponseEntity<DebateRoomResponse> changeStatus(@PathVariable Long roomId, @RequestParam int status, Principal principal) throws StatusChangeException {
         User user = userService.loadUserByUsername(principal.getName());
         DebateRoom updateRoom = debateService.changeStatus(roomId, status, user);

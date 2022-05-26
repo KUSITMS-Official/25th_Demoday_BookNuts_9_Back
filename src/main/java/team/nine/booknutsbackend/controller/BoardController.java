@@ -57,7 +57,7 @@ public class BoardController {
     }
 
     //게시글 수정
-    @PutMapping("/{boardId}")
+    @PatchMapping("/{boardId}")
     public ResponseEntity<BoardResponse> update(@PathVariable Long boardId, @RequestBody BoardRequest board, Principal principal) throws NoAccessException {
         Board originBoard = boardService.findBoard(boardId);
         User user = userService.loadUserByUsername(principal.getName());
