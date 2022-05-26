@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.nine.booknutsbackend.domain.User;
-import team.nine.booknutsbackend.service.BoardService;
+import team.nine.booknutsbackend.service.AuthService;
 import team.nine.booknutsbackend.service.ReactionService;
-import team.nine.booknutsbackend.service.UserService;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -21,9 +20,8 @@ import java.util.Map;
 @RequestMapping("/reaction")
 public class ReactionController {
 
-    private final UserService userService;
+    private final AuthService userService;
     private final ReactionService reactionService;
-    private final BoardService boardService;
 
     @PutMapping("/nuts/{boardId}")
     public ResponseEntity<Object> clickNuts(@PathVariable Long boardId, Principal principal) {

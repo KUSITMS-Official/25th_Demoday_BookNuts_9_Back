@@ -13,7 +13,7 @@ public class ArchiveRequest {
 
     @NotBlank String title;
     @NotBlank String content;
-    String imgUrl;
+    @NotBlank String imgUrl;
 
     public static Archive newArchive(ArchiveRequest archiveRequest, User user) {
         Archive archive = new Archive();

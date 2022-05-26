@@ -10,7 +10,7 @@ import team.nine.booknutsbackend.dto.Request.BoardRequest;
 import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.exception.board.NoAccessException;
 import team.nine.booknutsbackend.service.BoardService;
-import team.nine.booknutsbackend.service.UserService;
+import team.nine.booknutsbackend.service.AuthService;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -24,29 +24,29 @@ import java.util.Map;
 public class BoardController {
 
     private final BoardService boardService;
-    private final UserService userService;
+    private final AuthService userService;
 
     //게시글 작성
     @PostMapping("/write")
     public ResponseEntity<BoardResponse> write(@RequestBody @Valid BoardRequest board, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        Board saveBoard = boardService.write(BoardRequest.newBoard(board, user));
-        return new ResponseEntity<>(BoardResponse.boardResponse(saveBoard, user), HttpStatus.CREATED);
+        Board newBoard = boardService.write(BoardRequest.newBoard(board, user));
+        return new ResponseEntity<>(BoardResponse.boardResponse(newBoard, user), HttpStatus.CREATED);
     }
 
     //게시글 조회
     //나의 구독 = 0, 오늘 추천 = 1, 독립 출판 = 2
     @GetMapping("/list/{type}")
-    public List<BoardResponse> boardList(@PathVariable int type, Principal principal) {
+    public ResponseEntity<List<BoardResponse>> boardList(@PathVariable int type, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        return boardService.boardList(user, type);
+        return new ResponseEntity<>(boardService.boardList(user, type), HttpStatus.OK);
     }
 
     //내가 작성한 게시글
     @GetMapping("/mypost")
-    public List<BoardResponse> myBoardList(Principal principal){
+    public ResponseEntity<List<BoardResponse>> myBoardList(Principal principal){
         User user = userService.loadUserByUsername(principal.getName());
-        return boardService.myBoardList(user);
+        return new ResponseEntity<>(boardService.myBoardList(user), HttpStatus.OK);
     }
 
     //특정 게시글 조회

@@ -31,7 +31,7 @@ public class ArchiveService {
 
     //아카이브 리스트 조회
     @Transactional(readOnly = true)
-    public List<ArchiveResponse> allarchive(User user) {
+    public List<ArchiveResponse> archiveList(User user) {
         List<Archive> archives = archiveRepository.findAllByOwner(user);
         List<ArchiveResponse> archiveResponseList = new ArrayList<>();
 
@@ -45,7 +45,7 @@ public class ArchiveService {
 
     //아카이브 생성
     @Transactional
-    public Archive saveArchive(Archive archive) {
+    public Archive create(Archive archive) {
         return archiveRepository.save(archive);
     }
 
@@ -67,7 +67,7 @@ public class ArchiveService {
 
     //아카이브에 게시글 추가
     @Transactional
-    public void addToArchive(Long archiveId, Long boardId, User user) {
+    public void addPostToArchive(Long archiveId, Long boardId, User user) {
         Archive archive = archiveRepository.findById(archiveId)
                 .orElseThrow(() -> new ArchiveNotFoundException("존재하지 않는 아카이브 아이디입니다."));
         Board board = boardRepository.findById(boardId)
@@ -97,7 +97,7 @@ public class ArchiveService {
 
     //아카이브 안 게시글 삭제
     @Transactional
-    public void deleteBoardFromArchive(Long archiveId, Long boardId) {
+    public void deletePostFromArchive(Long archiveId, Long boardId) {
         Archive archive = archiveRepository.findById(archiveId)
                 .orElseThrow(() -> new ArchiveNotFoundException("존재하지 않는 아카이브 아이디입니다."));
         Board board = boardRepository.findById(boardId)

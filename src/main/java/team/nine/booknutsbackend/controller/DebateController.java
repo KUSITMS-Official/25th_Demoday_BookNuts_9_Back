@@ -11,7 +11,7 @@ import team.nine.booknutsbackend.dto.Response.DebateRoomResponse;
 import team.nine.booknutsbackend.exception.Debate.CannotJoinException;
 import team.nine.booknutsbackend.exception.Debate.StatusChangeException;
 import team.nine.booknutsbackend.service.DebateService;
-import team.nine.booknutsbackend.service.UserService;
+import team.nine.booknutsbackend.service.AuthService;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -26,7 +26,7 @@ import java.util.Map;
 public class DebateController {
 
     private final DebateService debateService;
-    private final UserService userService;
+    private final AuthService userService;
 
     //토론장 개설
     @PostMapping("/create")

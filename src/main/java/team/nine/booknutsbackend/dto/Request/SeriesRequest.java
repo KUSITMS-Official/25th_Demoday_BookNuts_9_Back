@@ -13,7 +13,7 @@ public class SeriesRequest {
     @NotBlank String title;
     @NotBlank String content;
     @NotBlank String imgUrl;
-    List<Long> boardIdlist;
+    @NotBlank List<Long> boardIdlist;
 
     public static Series newSeries(SeriesRequest seriesRequest, User user) {
         Series series = new Series();

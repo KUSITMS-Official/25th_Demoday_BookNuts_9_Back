@@ -5,10 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.nine.booknutsbackend.domain.User;
-import team.nine.booknutsbackend.dto.Response.UserProfileResponse;
 import team.nine.booknutsbackend.dto.Response.UserResponse;
 import team.nine.booknutsbackend.service.FollowService;
-import team.nine.booknutsbackend.service.UserService;
+import team.nine.booknutsbackend.service.AuthService;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -21,7 +20,7 @@ import java.util.Map;
 public class FollowController {
 
     private final FollowService followService;
-    private final UserService userService;
+    private final AuthService userService;
 
     //팔로우
     @PutMapping("/following/{followingId}")
@@ -32,7 +31,7 @@ public class FollowController {
         followService.save(following, follower);
 
         Map<String, String> map = new HashMap<>();
-        map.put("result", "팔로잉 완료");
+        map.put("result", "팔로우 완료");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
@@ -49,30 +48,20 @@ public class FollowController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    //사용자 프로필 조회
-    @GetMapping("/userprofile/{userId}")
-    public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable Long userId, Principal principal) {
-        User LoginUser = userService.loadUserByUsername(principal.getName());    //현재 로그인한 사용자
-        User findUser = userService.findUserById(userId);   //프로필을 조회하고 싶은 사용자
-
-        UserProfileResponse userProfileResponse = followService.getUserProfile(LoginUser, findUser);
-
-        return new ResponseEntity<>(userProfileResponse, HttpStatus.OK);
-    }
-
     //팔로잉 리스트
     @GetMapping("/followinglist/{userId}")
-    public List<UserResponse> findMyFollowingList(@PathVariable Long userId, Principal principal) {
+    public ResponseEntity<List<UserResponse>> findMyFollowingList(@PathVariable Long userId, Principal principal) {
         User currentLoginId = userService.loadUserByUsername(principal.getName());
         User user = userService.findUserById(userId);
-        return followService.findMyFollowingList(user);
+        return new ResponseEntity<>(followService.findMyFollowingList(user), HttpStatus.OK);
     }
 
     //팔로워 리스트
     @PostMapping("/followerlist/{userId}")
-    public List<UserResponse> findMyFollowerList(@PathVariable Long userId, Principal principal) {
+    public ResponseEntity<List<UserResponse>> findMyFollowerList(@PathVariable Long userId, Principal principal) {
         User currentLoginId = userService.loadUserByUsername(principal.getName());
         User user = userService.findUserById(userId);
-        return followService.findMyFollowerList(user);
+        return new ResponseEntity<>(followService.findMyFollowerList(user), HttpStatus.OK);
     }
+
 }

@@ -11,7 +11,7 @@ import team.nine.booknutsbackend.dto.Response.BoardResponse;
 import team.nine.booknutsbackend.dto.Response.SeriesResponse;
 import team.nine.booknutsbackend.exception.board.NoAccessException;
 import team.nine.booknutsbackend.service.SeriesService;
-import team.nine.booknutsbackend.service.UserService;
+import team.nine.booknutsbackend.service.AuthService;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -24,13 +24,13 @@ import java.util.Map;
 public class SeriesController {
 
     private final SeriesService seriesService;
-    private final UserService userService;
+    private final AuthService userService;
 
     //내 시리즈 조회
     @GetMapping("/list")
-    public List<SeriesResponse> allMySeries(Principal principal) {
+    public ResponseEntity<List<SeriesResponse>> allMySeries(Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        return seriesService.allMySeries(user);
+        return new ResponseEntity<>(seriesService.allMySeries(user), HttpStatus.OK);
     }
 
     //시리즈 발행
@@ -43,9 +43,9 @@ public class SeriesController {
 
     //특정 시리즈 조회
     @GetMapping("/{seriesId}")
-    public List<BoardResponse> findMySeries(@PathVariable Long seriesId, Principal principal) {
+    public ResponseEntity<List<BoardResponse>> findMySeries(@PathVariable Long seriesId, Principal principal) {
         User user = userService.loadUserByUsername(principal.getName());
-        return seriesService.findSeriesBoards(seriesId, user);
+        return new ResponseEntity<>(seriesService.findSeriesBoards(seriesId, user), HttpStatus.OK);
     }
 
     //시리즈 삭제
@@ -55,7 +55,7 @@ public class SeriesController {
         seriesService.delete(seriesId, user);
 
         Map<String, String> map = new HashMap<>();
-        map.put("result", "시리즈 삭제 완료");
+        map.put("result", "삭제 완료");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
@@ -66,7 +66,7 @@ public class SeriesController {
         seriesService.addToSeries(seriesId, boardId);
 
         Map<String, String> map = new HashMap<>();
-        map.put("result", "시리즈에 추가 완료");
+        map.put("result", "추가 완료");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 

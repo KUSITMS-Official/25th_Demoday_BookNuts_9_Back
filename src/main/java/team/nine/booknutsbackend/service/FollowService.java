@@ -19,14 +19,14 @@ import java.util.List;
 public class FollowService {
 
     private final FollowRepository followRepository;
-    private final UserService userService;
+    private final AuthService userService;
 
     //팔로우
     @Transactional
     public void save(User following, User follower) {
         Follow follow = new Follow();
 
-        if(followRepository.findByFollowingAndFollower(following, follower).isPresent())
+        if (followRepository.findByFollowingAndFollower(following, follower).isPresent())
             throw new FollowDuplicateException("이미 팔로잉한 계정입니다");
 
         follow.setFollowing(userService.findUserById(following.getUserId()));
@@ -57,8 +57,8 @@ public class FollowService {
 
     //내가 팔로우한 사용자인지 체크
     @Transactional(readOnly = true)
-    public boolean checkFollowingMe(User following, User currentUserId){
-        if(followRepository.countByFollowingAndFollower(following, currentUserId) == 0)
+    public boolean checkFollowingMe(User following, User currentUserId) {
+        if (followRepository.countByFollowingAndFollower(following, currentUserId) == 0)
             return false;
         return true;
     }
@@ -66,27 +66,27 @@ public class FollowService {
     //나의 팔로잉 리스트
     @Transactional(readOnly = true)
     public List<UserResponse> findMyFollowingList(User userId) {
-        List<Follow> followlist= followRepository.findByFollower(userId);
+        List<Follow> followlist = followRepository.findByFollower(userId);
         List<UserResponse> followingUserList = new ArrayList<>();
 
         for (Follow follow : followlist) {
             followingUserList.add(UserResponse.newUserResponse(follow.getFollowing()));
         }
 
-        return  followingUserList;
+        return followingUserList;
     }
 
     //나의 팔로워 리스트
     @Transactional(readOnly = true)
     public List<UserResponse> findMyFollowerList(User userId) {
-        List<Follow> followlist= followRepository.findByFollowing(userId);
+        List<Follow> followlist = followRepository.findByFollowing(userId);
         List<UserResponse> followerUserList = new ArrayList<>();
 
         for (Follow follow : followlist) {
             followerUserList.add(UserResponse.newUserResponse(follow.getFollower()));
         }
 
-        return  followerUserList;
+        return followerUserList;
 
     }
 
@@ -106,6 +106,6 @@ public class FollowService {
         userProfileResponse.setUserFollowingCount(findFollowing(findUser));
 
         return userProfileResponse;
-
     }
+
 }
