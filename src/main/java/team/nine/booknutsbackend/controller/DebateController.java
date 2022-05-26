@@ -37,6 +37,12 @@ public class DebateController {
         return new ResponseEntity<>(DebateRoomResponse.roomResponse(saveRoom), HttpStatus.CREATED);
     }
 
+    //특정 토론장 조회
+    @GetMapping("/{roomId}")
+    public ResponseEntity<DebateRoomResponse> findRoom(@PathVariable Long roomId) {
+        return new ResponseEntity<>(DebateRoomResponse.roomResponse(debateService.findRoom(roomId)), HttpStatus.OK);
+    }
+
     //참여 가능 여부
     @GetMapping("/canjoin/{roomId}")
     public ResponseEntity<Object> canJoin(@PathVariable Long roomId) {
