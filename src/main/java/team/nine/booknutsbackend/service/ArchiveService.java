@@ -18,6 +18,7 @@ import team.nine.booknutsbackend.repository.ArchiveRepository;
 import team.nine.booknutsbackend.repository.BoardRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -37,6 +38,8 @@ public class ArchiveService {
         for (Archive archive : archives) {
             archiveResponseList.add(ArchiveResponse.archiveResponse(archive));
         }
+
+        Collections.reverse(archiveResponseList); //최신순
         return archiveResponseList;
     }
 
@@ -46,7 +49,7 @@ public class ArchiveService {
         return archiveRepository.save(archive);
     }
 
-    //특정 아카이브 조회
+    //특정 아카이브 내의 게시글 조회
     @Transactional(readOnly = true)
     public List<BoardResponse> findArchive(Long archiveId, User user) throws ArchiveNotFoundException {
         Archive archive = archiveRepository.findById(archiveId)
@@ -57,10 +60,12 @@ public class ArchiveService {
         for (ArchiveBoard archiveBoard : archiveBoards) {
             boardList.add(BoardResponse.boardResponse(archiveBoard.getBoard(), user));
         }
+
+        Collections.reverse(boardList); //최신순
         return boardList;
     }
 
-    //아카이브에 추가
+    //아카이브에 게시글 추가
     @Transactional
     public void addToArchive(Long archiveId, Long boardId, User user) {
         Archive archive = archiveRepository.findById(archiveId)
@@ -102,7 +107,7 @@ public class ArchiveService {
         archiveBoardRepository.delete(archiveBoard);
     }
 
-    //아카이브 조회(아카이브명, 내용, 이미지)
+    //아카이브 조회 (아카이브명, 내용, 이미지)
     @Transactional(readOnly = true)
     public Archive findByArchiveId(Long archiveId) throws ArchiveNotFoundException {
         return archiveRepository.findById(archiveId)

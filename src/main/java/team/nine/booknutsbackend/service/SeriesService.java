@@ -19,6 +19,7 @@ import team.nine.booknutsbackend.repository.SeriesBoardRepository;
 import team.nine.booknutsbackend.repository.SeriesRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -39,6 +40,8 @@ public class SeriesService {
         for (Series series : stories) {
             seriesResponseList.add(SeriesResponse.seriesResponse(series));
         }
+
+        Collections.reverse(seriesResponseList); //최신순
         return seriesResponseList;
     }
 
@@ -55,7 +58,6 @@ public class SeriesService {
             seriesBoardRepository.save(seriesBoard);
         }
 
-        
         return series;
     }
 
@@ -70,6 +72,8 @@ public class SeriesService {
         for (SeriesBoard seriesBoard : seriesBoards) {
             boardList.add(BoardResponse.boardResponse(seriesBoard.getBoard(), user));
         }
+
+        Collections.reverse(boardList); //최신순
         return boardList;
     }
 
