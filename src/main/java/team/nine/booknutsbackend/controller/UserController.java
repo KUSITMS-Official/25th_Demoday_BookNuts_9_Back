@@ -52,11 +52,12 @@ public class UserController {
             throw new PasswordErrorException("잘못된 비밀번호입니다.");
         }
 
-        String token = loginUser.getAccessToken();
-        if(!jwtTokenProvider.validateToken(token)){
-            token = jwtTokenProvider.createToken(loginUser.getUsername(), loginUser.getRoles()); //getUsername -> 이메일 반환
-            userService.updateToken(loginUser.getUserId(), token);
-        }
+        /*
+        * refresh 토큰 구현 전,
+        * 로그인할 때마다 token 새로 생성
+        */
+        String token = jwtTokenProvider.createToken(loginUser.getUsername(), loginUser.getRoles()); //getUsername -> 이메일 반환
+        userService.updateToken(loginUser.getUserId(), token);
 
         Map<String, String> map = new LinkedHashMap<>();
         map.put("nickname", loginUser.getNickname());
