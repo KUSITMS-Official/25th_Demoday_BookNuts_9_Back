@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.nine.booknutsbackend.domain.Follow;
 import team.nine.booknutsbackend.domain.User;
-import team.nine.booknutsbackend.dto.Response.UserProfileResponse;
 import team.nine.booknutsbackend.dto.Response.UserResponse;
 import team.nine.booknutsbackend.exception.follow.FollowDuplicateException;
 import team.nine.booknutsbackend.repository.FollowRepository;
@@ -43,24 +42,6 @@ public class FollowService {
         followRepository.delete(follow);
     }
 
-    //나의 팔로잉(내가 팔로우 하는)
-    @Transactional(readOnly = true)
-    public int findFollowing(User curUser) {
-        return followRepository.countByFollower(curUser);
-    }
-
-    //나의 팔로워(나를 팔로우 하는)
-    @Transactional(readOnly = true)
-    public int findFollower(User curUser) {
-        return followRepository.countByFollowing(curUser);
-    }
-
-    //내가 팔로우한 사용자인지 체크
-    @Transactional(readOnly = true)
-    public boolean checkFollowingMe(User following, User curUser) {
-        return followRepository.countByFollowingAndFollower(following, curUser) != 0;
-    }
-
     //나의 팔로잉 리스트
     @Transactional(readOnly = true)
     public List<UserResponse> findMyFollowingList(User user) {
@@ -86,24 +67,6 @@ public class FollowService {
 
         return followerUserList;
 
-    }
-
-    //사용자 프로필 조회
-    @Transactional(readOnly = true)
-    public UserProfileResponse getUserProfile(User curUser, User targetUser) {
- //       UserProfileResponse userProfileResponse = new UserProfileResponse();
-
-//        userProfileResponse.setUserResponse(UserResponse.newUserResponse(findUser));
-//        userProfileResponse.setLoginUser(currentLoginUser.getUserId() == findUser.getUserId());
-//
-//        //현재 로그인 유저가 findUser를 구독했는지 체크
-//        userProfileResponse.setFollow(checkFollowingMe(findUser, currentLoginUser));
-//
-//        //findUser의 팔로잉, 팔로워 수 체크
-//        userProfileResponse.setUserFollowerCount(findFollower(findUser));
-//        userProfileResponse.setUserFollowingCount(findFollowing(findUser));
-
-        return UserProfileResponse.userProfileResponse(curUser, targetUser);
     }
 
 }

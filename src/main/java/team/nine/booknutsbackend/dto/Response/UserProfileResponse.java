@@ -26,17 +26,14 @@ public class UserProfileResponse {
                 .followerCount(targetUser.getFollowings().size())
                 .followingCount(targetUser.getFollowers().size())
                 .build();
-
     }
 
     private static Boolean getIsFollow(User curUser, User targetUser){
         List<Follow> followList = curUser.getFollowers();
-
         for (Follow follow : followList) {
-            if (follow.getFollower() == targetUser) {
-                return true;
-            }
+            if (follow.getFollower() == targetUser) return true;
         }
         return false;
     }
+
 }
