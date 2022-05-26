@@ -57,7 +57,7 @@ public class FollowController {
     }
 
     //팔로워 리스트
-    @PostMapping("/followerlist/{userId}")
+    @GetMapping("/followerlist/{userId}")
     public ResponseEntity<List<UserResponse>> findMyFollowerList(@PathVariable Long userId, Principal principal) {
         User currentLoginId = userService.loadUserByUsername(principal.getName());
         User user = userService.findUserById(userId);
