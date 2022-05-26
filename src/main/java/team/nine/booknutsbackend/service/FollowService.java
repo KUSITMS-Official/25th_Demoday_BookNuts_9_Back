@@ -39,34 +39,32 @@ public class FollowService {
     @Transactional
     public void deleteByFollowingIdAndFollowerId(User unfollowing, User follower) {
         Follow follow = followRepository.findByFollowingAndFollower(unfollowing, follower)
-                .orElseThrow(() -> new FollowDuplicateException("팔로잉하지 않은 계정입니다."));
+                .orElseThrow(() -> new FollowDuplicateException("팔로우하지 않은 계정입니다."));
         followRepository.delete(follow);
     }
 
-    //나를 팔로우 하는 유저 수 체크
+    //나의 팔로잉(내가 팔로우 하는)
     @Transactional(readOnly = true)
-    public int findFollowing(User currentUserId) {
-        return followRepository.countByFollowing(currentUserId);
+    public int findFollowing(User curUser) {
+        return followRepository.countByFollower(curUser);
     }
 
-    //내가 팔로우 하는 유저 수 체크
+    //나의 팔로워(나를 팔로우 하는)
     @Transactional(readOnly = true)
-    public int findFollower(User currentUserId) {
-        return followRepository.countByFollower(currentUserId);
+    public int findFollower(User curUser) {
+        return followRepository.countByFollowing(curUser);
     }
 
     //내가 팔로우한 사용자인지 체크
     @Transactional(readOnly = true)
-    public boolean checkFollowingMe(User following, User currentUserId) {
-        if (followRepository.countByFollowingAndFollower(following, currentUserId) == 0)
-            return false;
-        return true;
+    public boolean checkFollowingMe(User following, User curUser) {
+        return followRepository.countByFollowingAndFollower(following, curUser) != 0;
     }
 
     //나의 팔로잉 리스트
     @Transactional(readOnly = true)
-    public List<UserResponse> findMyFollowingList(User userId) {
-        List<Follow> followlist = followRepository.findByFollower(userId);
+    public List<UserResponse> findMyFollowingList(User user) {
+        List<Follow> followlist = followRepository.findByFollower(user);
         List<UserResponse> followingUserList = new ArrayList<>();
 
         for (Follow follow : followlist) {
@@ -78,8 +76,8 @@ public class FollowService {
 
     //나의 팔로워 리스트
     @Transactional(readOnly = true)
-    public List<UserResponse> findMyFollowerList(User userId) {
-        List<Follow> followlist = followRepository.findByFollowing(userId);
+    public List<UserResponse> findMyFollowerList(User user) {
+        List<Follow> followlist = followRepository.findByFollowing(user);
         List<UserResponse> followerUserList = new ArrayList<>();
 
         for (Follow follow : followlist) {

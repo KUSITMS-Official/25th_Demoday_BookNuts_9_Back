@@ -23,7 +23,7 @@ public class FollowController {
     private final AuthService userService;
 
     //팔로우
-    @PutMapping("/following/{followingId}")
+    @PutMapping("/{followingId}")
     public ResponseEntity<Object> follow(@PathVariable Long followingId, Principal principal) {
         User follower = userService.loadUserByUsername(principal.getName());
         User following = userService.findUserById(followingId);
@@ -36,7 +36,7 @@ public class FollowController {
     }
 
     //언팔로우
-    @DeleteMapping("/unfollow/{unfollowingId}")
+    @DeleteMapping("/{unfollowingId}")
     public ResponseEntity<Object> unfollow(@PathVariable Long unfollowingId, Principal principal) {
         User follower = userService.loadUserByUsername(principal.getName());    //나(팔로워)
         User unfollowing = userService.findUserById(unfollowingId);

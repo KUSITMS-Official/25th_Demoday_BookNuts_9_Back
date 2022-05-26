@@ -69,6 +69,12 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Nuts> nutsList = new ArrayList<>();
 
+    @JsonIgnore
+    private int followingCnt = 0;
+
+    @JsonIgnore
+    private int followerCnt = 0;
+
     @Override
     public String getUsername() {
         return email;
