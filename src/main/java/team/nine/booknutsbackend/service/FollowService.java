@@ -90,20 +90,20 @@ public class FollowService {
 
     //사용자 프로필 조회
     @Transactional(readOnly = true)
-    public UserProfileResponse getUserProfile(User currentLoginUser, User findUser) {
-        UserProfileResponse userProfileResponse = new UserProfileResponse();
+    public UserProfileResponse getUserProfile(User curUser, User targetUser) {
+ //       UserProfileResponse userProfileResponse = new UserProfileResponse();
 
-        userProfileResponse.setUserResponse(UserResponse.newUserResponse(findUser));
-        userProfileResponse.setLoginUser(currentLoginUser.getUserId() == findUser.getUserId());
+//        userProfileResponse.setUserResponse(UserResponse.newUserResponse(findUser));
+//        userProfileResponse.setLoginUser(currentLoginUser.getUserId() == findUser.getUserId());
+//
+//        //현재 로그인 유저가 findUser를 구독했는지 체크
+//        userProfileResponse.setFollow(checkFollowingMe(findUser, currentLoginUser));
+//
+//        //findUser의 팔로잉, 팔로워 수 체크
+//        userProfileResponse.setUserFollowerCount(findFollower(findUser));
+//        userProfileResponse.setUserFollowingCount(findFollowing(findUser));
 
-        //현재 로그인 유저가 findUser를 구독했는지 체크
-        userProfileResponse.setFollow(checkFollowingMe(findUser, currentLoginUser));
-
-        //findUser의 팔로잉, 팔로워 수 체크
-        userProfileResponse.setUserFollowerCount(findFollower(findUser));
-        userProfileResponse.setUserFollowingCount(findFollowing(findUser));
-
-        return userProfileResponse;
+        return UserProfileResponse.userProfileResponse(curUser, targetUser);
     }
 
 }

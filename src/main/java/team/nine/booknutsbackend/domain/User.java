@@ -69,11 +69,13 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Nuts> nutsList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "follower")
     @JsonIgnore
-    private int followingCnt = 0;
+    private List<Follow> followers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "following")
     @JsonIgnore
-    private int followerCnt = 0;
+    private List<Follow> followings = new ArrayList<>();
 
     @Override
     public String getUsername() {
