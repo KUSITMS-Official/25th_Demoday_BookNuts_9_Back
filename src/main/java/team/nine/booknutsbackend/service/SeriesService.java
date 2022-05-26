@@ -85,6 +85,7 @@ public class SeriesService {
     }
 
     //시리즈에 게시글 추가
+    @Transactional
     public void addToSeries(Long seriesId, Long boardId) {
         Series series = seriesRepository.findById(seriesId)
                 .orElseThrow(() -> new SeriesNotFoundException("존재하지 않는 시리즈 아이디입니다."));
