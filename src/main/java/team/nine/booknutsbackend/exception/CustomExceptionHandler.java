@@ -13,14 +13,10 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> CommonExceptionHandler(Exception e) {
-        return new ResponseEntity<>(format(e), HttpStatusMap.getCode(e));
-    }
-
-    public Object format(Exception e) {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("error", e.getClass().getSimpleName());
         map.put("msg", e.getMessage());
-
-        return map;
+        return new ResponseEntity<>(map, HttpStatusMap.getCode(e));
     }
+
 }
